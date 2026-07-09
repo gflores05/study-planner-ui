@@ -1,6 +1,8 @@
+import { Card } from '../../../../../components/card'
+
 export function CompletedTopicCard() {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm transition-all hover:shadow-md">
+    <Card hover>
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-4">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600">
@@ -25,13 +27,13 @@ export function CompletedTopicCard() {
           <i className="fa-solid fa-award mr-1"></i> Examen: 90/100
         </button>
       </div>
-    </div>
+    </Card>
   )
 }
 
 export function InProgressTopicCard() {
   return (
-    <div className="rounded-xl border-2 border-indigo-600 bg-white p-5 shadow-sm ring-1 ring-indigo-100">
+    <Card selected>
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-4">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-indigo-100 text-indigo-600 animate-pulse">
@@ -59,13 +61,13 @@ export function InProgressTopicCard() {
           <i className="fa-solid fa-pen-to-square mr-1"></i> Tomar Examen
         </button>
       </div>
-    </div>
+    </Card>
   )
 }
 
 export function PendingTopicCard() {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-5 shadow-sm opacity-70">
+    <Card disabled>
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-4">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-400">
@@ -92,6 +94,6 @@ export function PendingTopicCard() {
           Bloqueado
         </button>
       </div>
-    </div>
+    </Card>
   )
 }

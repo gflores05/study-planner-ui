@@ -1,6 +1,8 @@
+import { Card } from '../../../../components/card'
+
 export function PerformanceCard() {
   return (
-    <div className="rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+    <Card>
       <h3 className="font-bold text-slate-900 mb-4">Tu Rendimiento</h3>
       <div className="space-y-4">
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
@@ -18,6 +20,6 @@ export function PerformanceCard() {
           </span>
         </div>
       </div>
-    </div>
+    </Card>
   )
 }
