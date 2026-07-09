@@ -1,8 +1,8 @@
 import './App.css'
-import { Assessment } from './assessment'
+import { AppRouter } from './app/router'
 
 function App() {
-  return <Assessment />
+  return <AppRouter />
 }
 
 export default App

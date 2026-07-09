@@ -1,8 +1,8 @@
-import { AssessmentActions } from './actions'
-import { AssessmentNavbar } from './navbar'
-import { AssessmentNavigation } from './navigation'
-import { AssessmentProgress } from './progress'
-import { Question } from './question'
+import { AssessmentActions } from '../actions'
+import { AssessmentNavbar } from '../navbar'
+import { AssessmentNavigation } from '../navigation'
+import { AssessmentProgress } from '../progress'
+import { Question } from '../question'
 
 interface AssessmentContainerProps {
   children: React.ReactNode

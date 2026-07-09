@@ -1,4 +1,4 @@
-import { MainContainer } from '../../components/main-container'
+import { MainContainer } from '../../../../components/main-container'
 import { StudyPlanNavbar } from '../navbar'
 import { NewPlanBanner } from './new-plan-banner'
 import { PerformanceInfo } from './performance-info'

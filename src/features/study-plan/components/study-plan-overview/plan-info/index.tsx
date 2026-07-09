@@ -1,4 +1,4 @@
-import { ProgressBar } from '../../../components/progress-bar'
+import { ProgressBar } from '../../../../../components/progress-bar'
 import { PlanTitle } from './plan-title'
 import { TopicsList } from './topics-list'
 

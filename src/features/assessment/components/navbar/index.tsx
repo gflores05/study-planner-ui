@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Navbar } from '../../components/navbar'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faClock } from '@fortawesome/free-regular-svg-icons'
+import { Navbar } from '../../../../components/navbar'
 
 export function AssessmentExam() {
   return (

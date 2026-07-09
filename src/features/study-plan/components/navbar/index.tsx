@@ -1,6 +1,6 @@
 import { faUserGraduate } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Navbar } from '../../components/navbar'
+import { Navbar } from '../../../../components/navbar'
 
 function StudyPlanLevel() {
   return (
