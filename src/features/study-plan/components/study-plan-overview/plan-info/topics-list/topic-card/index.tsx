@@ -1,6 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Button } from '../../../../../../../components'
-import { Card } from '../../../../../../../components/card'
+import { Button, Card } from '@/components'
 import {
   faAward,
   faBookOpen,

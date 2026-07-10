@@ -1,5 +1,5 @@
-import { MainContainer } from '../../../../components/main-container'
-import { StudyPlanNavbar } from '../navbar'
+import { MainContainer } from '@/components'
+import { StudyPlanNavbar } from '@/features/study-plan'
 import { NewPlanBanner } from './new-plan-banner'
 import { PerformanceInfo } from './performance-info'
 import { PlanInfo } from './plan-info'

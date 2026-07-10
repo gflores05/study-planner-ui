@@ -1,7 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faLightbulb } from '@fortawesome/free-regular-svg-icons'
 import cx from 'classnames'
-import { Card } from '../../../../components/card'
+import { Card } from '@/components/card'
 
 interface QuestionTextProps {
   children: React.ReactNode

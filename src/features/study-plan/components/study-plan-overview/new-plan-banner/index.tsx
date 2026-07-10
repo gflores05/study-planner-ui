@@ -1,11 +1,10 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Button } from '../../../../../components'
-import { Container } from '../../../../../components/container'
+import { Button, Content } from '@/components'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 
 export function NewPlanBanner() {
   return (
-    <Container variant="primary">
+    <Content variant="primary">
       <h1 className="text-2xl font-bold sm:text-3xl">
         ¡Hola de nuevo! Listo para estudiar?
       </h1>
@@ -18,6 +17,6 @@ export function NewPlanBanner() {
           <FontAwesomeIcon icon={faPlus} /> Nuevo Plan de Estudios
         </Button>
       </div>
-    </Container>
+    </Content>
   )
 }

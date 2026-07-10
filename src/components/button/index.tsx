@@ -8,6 +8,7 @@ interface ButtonProps {
   size?: 'normal' | 'medium' | 'small' | 'icon'
   title?: string
   disabled?: boolean
+  type?: 'submit' | 'reset' | 'button'
 }
 
 export function Button({
@@ -16,10 +17,12 @@ export function Button({
   title,
   variant = 'default',
   size = 'normal',
-  disabled
+  disabled,
+  type
 }: ButtonProps) {
   return (
     <button
+      type={type}
       title={title}
       onClick={onClick}
       className={cx(

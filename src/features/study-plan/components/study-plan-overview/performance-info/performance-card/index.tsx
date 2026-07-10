@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Card } from '../../../../../../components/card'
+import { Card } from '@/components'
 import { faFire } from '@fortawesome/free-solid-svg-icons'
 
 export function PerformanceCard() {

@@ -1,6 +1,6 @@
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Button } from '../../../../components'
+import { Button } from '@/components'
 
 export function AssessmentActions() {
   return (
