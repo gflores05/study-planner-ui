@@ -7,7 +7,7 @@ import { PlanInfo } from './plan-info'
 export function StudyPlanOverview() {
   return (
     <>
-      <StudyPlanNavbar />
+      <StudyPlanNavbar level="Universitario" />
       <MainContainer>
         <NewPlanBanner />
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">

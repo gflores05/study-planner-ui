@@ -1,4 +1,6 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Card } from '../../../../../../components/card'
+import { faFire } from '@fortawesome/free-solid-svg-icons'
 
 export function PerformanceCard() {
   return (
@@ -16,7 +18,7 @@ export function PerformanceCard() {
         <div className="flex items-center justify-between">
           <span className="text-sm text-slate-500">Racha de Estudio</span>
           <span className="font-bold text-amber-600 flex items-center gap-1">
-            <i className="fa-solid fa-fire"></i> 4 Días
+            <FontAwesomeIcon icon={faFire} /> 4 Días
           </span>
         </div>
       </div>

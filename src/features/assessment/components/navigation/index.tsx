@@ -1,3 +1,5 @@
+import { Button } from '../../../../components'
+
 interface QuestionCompletedButtonProps {
   children: string
 }
@@ -6,9 +8,9 @@ export function QuestionCompletedButton({
   children
 }: QuestionCompletedButtonProps) {
   return (
-    <button className="w-8 h-8 rounded-lg bg-emerald-100 text-emerald-700 text-xs font-bold ring-1 ring-emerald-600/10">
+    <Button variant="success" size="small">
       {children}
-    </button>
+    </Button>
   )
 }
 
@@ -20,9 +22,9 @@ export function CurrentQuestionButton({
   children
 }: CurrentQuestionButtonProps) {
   return (
-    <button className="w-8 h-8 rounded-lg bg-indigo-600 text-white text-xs font-bold">
+    <Button variant="primary" size="small">
       {children}
-    </button>
+    </Button>
   )
 }
 
@@ -34,9 +36,9 @@ export function QuestionNavigationButton({
   children
 }: QuestionNavigationButtonProps) {
   return (
-    <button className="w-8 h-8 rounded-lg border border-slate-200 text-slate-400 text-xs font-medium hover:bg-slate-50">
+    <Button disabled size="small">
       {children}
-    </button>
+    </Button>
   )
 }
 

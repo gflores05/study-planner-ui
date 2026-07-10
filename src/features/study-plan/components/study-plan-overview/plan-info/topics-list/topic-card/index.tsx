@@ -1,4 +1,14 @@
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { Button } from '../../../../../../../components'
 import { Card } from '../../../../../../../components/card'
+import {
+  faAward,
+  faBookOpen,
+  faCircleCheck,
+  faClock,
+  faLock,
+  faPenToSquare
+} from '@fortawesome/free-solid-svg-icons'
 
 export function CompletedTopicCard() {
   return (
@@ -6,7 +16,7 @@ export function CompletedTopicCard() {
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-4">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600">
-            <i className="fa-solid fa-circle-check text-lg"></i>
+            <FontAwesomeIcon icon={faCircleCheck} className="text-lg" />
           </div>
           <div>
             <h3 className="font-semibold line-through text-slate-400">
@@ -18,14 +28,14 @@ export function CompletedTopicCard() {
             </p>
             <div className="mt-3 flex gap-2">
               <span className="inline-flex items-center gap-1 rounded-md bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600">
-                <i className="fa-regular fa-clock"></i> 2 horas
+                <FontAwesomeIcon icon={faClock} /> 2 horas
               </span>
             </div>
           </div>
         </div>
-        <button className="shrink-0 rounded-xl bg-emerald-50 px-3 py-2 text-xs font-bold text-emerald-700 ring-1 ring-inset ring-emerald-600/10">
-          <i className="fa-solid fa-award mr-1"></i> Examen: 90/100
-        </button>
+        <Button variant="success" size="small">
+          <FontAwesomeIcon icon={faAward} className="mr-1" /> Examen: 90/100
+        </Button>
       </div>
     </Card>
   )
@@ -37,7 +47,7 @@ export function InProgressTopicCard() {
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-4">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-indigo-100 text-indigo-600 animate-pulse">
-            <i className="fa-solid fa-book-open text-lg"></i>
+            <FontAwesomeIcon icon={faBookOpen} className="text-lg" />
           </div>
           <div>
             <span className="inline-block rounded-md bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-700 mb-1">
@@ -52,14 +62,14 @@ export function InProgressTopicCard() {
             </p>
             <div className="mt-3 flex gap-2">
               <span className="inline-flex items-center gap-1 rounded-md bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600">
-                <i className="fa-regular fa-clock"></i> 4 horas
+                <FontAwesomeIcon icon={faClock} /> 4 horas
               </span>
             </div>
           </div>
         </div>
-        <button className="shrink-0 rounded-xl bg-indigo-600 px-4 py-2 text-xs font-bold text-white shadow-sm hover:bg-indigo-700 transition-colors">
-          <i className="fa-solid fa-pen-to-square mr-1"></i> Tomar Examen
-        </button>
+        <Button variant="primary" size="small">
+          <FontAwesomeIcon icon={faPenToSquare} /> Tomar Examen
+        </Button>
       </div>
     </Card>
   )
@@ -71,7 +81,7 @@ export function PendingTopicCard() {
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-4">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-400">
-            <i className="fa-solid fa-lock text-lg"></i>
+            <FontAwesomeIcon icon={faLock} className="text-lg" />
           </div>
           <div>
             <h3 className="font-semibold text-slate-700">
@@ -83,16 +93,14 @@ export function PendingTopicCard() {
             </p>
             <div className="mt-3 flex gap-2">
               <span className="inline-flex items-center gap-1 rounded-md bg-slate-50 px-2 py-1 text-xs font-medium text-slate-400">
-                <i className="fa-regular fa-clock"></i> 3 horas
+                <FontAwesomeIcon icon={faClock} /> 3 horas
               </span>
             </div>
           </div>
         </div>
-        <button
-          disabled
-          className="shrink-0 rounded-xl bg-slate-100 px-3 py-2 text-xs font-bold text-slate-400 cursor-not-allowed">
+        <Button disabled size="small">
           Bloqueado
-        </button>
+        </Button>
       </div>
     </Card>
   )

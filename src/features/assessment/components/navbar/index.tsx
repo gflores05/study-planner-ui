@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faClock } from '@fortawesome/free-regular-svg-icons'
 import { Navbar } from '../../../../components/navbar'
+import { Button } from '../../../../components'
 
 export function AssessmentExam() {
   return (
@@ -42,11 +43,9 @@ export function AssessmentTime() {
 
 export function AssessmentCloseButton() {
   return (
-    <button
-      className="rounded-xl border border-slate-200 p-2 text-slate-400 hover:bg-slate-50 hover:text-slate-600 transition-colors"
-      title="Salir del examen">
+    <Button title="Salir del examen" size="icon">
       <FontAwesomeIcon className="text-lg px-1" icon={faXmark} />
-    </button>
+    </Button>
   )
 }
 

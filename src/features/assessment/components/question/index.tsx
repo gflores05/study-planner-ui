@@ -21,8 +21,7 @@ interface QuestionHintProps {
 function QuestionHint({ children }: QuestionHintProps) {
   return (
     <p className="mt-2 text-sm text-slate-500 inline-flex items-center gap-1">
-      <i className="fa-regular fa-lightbulb text-indigo-500"></i>
-      <FontAwesomeIcon icon={faLightbulb} />
+      <FontAwesomeIcon icon={faLightbulb} className="text-indigo-500" />
       {children}
     </p>
   )
