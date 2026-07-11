@@ -80,7 +80,7 @@ interface QuestionOptionListProps {
 export function QuestionOptionList({ children }: QuestionOptionListProps) {
   return <div className="mt-8 space-y-4">{children}</div>
 }
-export function Question() {
+export function QuestionCard() {
   return (
     <Card compact>
       <QuestionText>

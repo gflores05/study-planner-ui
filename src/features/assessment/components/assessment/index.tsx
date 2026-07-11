@@ -3,7 +3,7 @@ import {
   AssessmentNavbar,
   AssessmentNavigation,
   AssessmentProgress,
-  Question
+  QuestionCard
 } from '@/features/assessment'
 
 interface AssessmentContainerProps {
@@ -17,13 +17,13 @@ export function AssessmentContainer({ children }: AssessmentContainerProps) {
   )
 }
 
-export function Assessment() {
+export function AssessmentResolution() {
   return (
     <>
       <AssessmentNavbar />
       <AssessmentContainer>
         <AssessmentProgress />
-        <Question />
+        <QuestionCard />
         <AssessmentActions />
       </AssessmentContainer>
       <AssessmentNavigation />

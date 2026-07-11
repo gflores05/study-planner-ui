@@ -9,6 +9,7 @@ interface ButtonProps {
   title?: string
   disabled?: boolean
   type?: 'submit' | 'reset' | 'button'
+  form?: string
 }
 
 export function Button({
@@ -18,13 +19,15 @@ export function Button({
   variant = 'default',
   size = 'normal',
   disabled,
-  type
+  type,
+  form
 }: ButtonProps) {
   return (
     <button
       type={type}
       title={title}
       onClick={onClick}
+      form={form}
       className={cx(
         'inline-flex items-center rounded-xl transition-colors',
         variant === 'default' &&
