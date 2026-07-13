@@ -24,28 +24,21 @@ export function useStudyPlan(id: string) {
 }
 
 export function useGenerateStudyPlan() {
-  const [id, setId] = useState<string | null>(null)
+  const [studyPlanId, setStudyPlanId] = useState<string | null>(null)
   const dispatch = useAppDispatch()
-  const currentStudyPlan = useAppSelector(selectCurrentStudyPlan)
   const loading = useAppSelector(selectStudyPlanLoading)
   const error = useAppSelector(selectStudyPlanError)
-
-  useEffect(() => {
-    if (id) {
-      dispatch(getStudyPlan(id))
-    }
-  }, [id, dispatch])
 
   async function generateStudyPlan(
     subject: string,
     level: string,
-    grade: string
+    grade: number
   ) {
-    const studyPlanId = await dispatch(
+    const id = await dispatch(
       requestStudyPlan({ subject, level, grade })
     ).unwrap()
-    setId(studyPlanId)
+    setStudyPlanId(id)
   }
 
-  return { generateStudyPlan, currentStudyPlan, loading, error }
+  return { generateStudyPlan, studyPlanId, loading, error }
 }

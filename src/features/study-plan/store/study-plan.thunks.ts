@@ -11,7 +11,8 @@ export const requestStudyPlan = createAsyncThunk<
 >('studyPlan/request', async (request, { rejectWithValue }) => {
   try {
     const response = await StudyPlanService.request(request)
-    return response.id
+
+    return response.study_plan_id
   } catch (error) {
     return rejectWithValue((error as Error).message)
   }

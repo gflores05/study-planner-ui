@@ -27,7 +27,7 @@ import {
   faStairs
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useGenerateStudyPlan } from '../../hooks/study-plan.hooks'
 import {
   Controller,
@@ -39,7 +39,6 @@ import {
 import { toast } from 'sonner'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
-import { Spinner } from '@/components/ui/spinner'
 import { NavLink } from 'react-router'
 
 type OptionData = { label: string; value: string | null }
@@ -54,45 +53,45 @@ const levels = [
 
 const gradesByLevel: Record<string, OptionData[]> = {
   'Elementary School': [
-    { label: 'Select a grade', value: 'Unknown' },
-    { label: '1st Grade', value: '1st Grade' },
-    { label: '2nd Grade', value: '2nd Grade' },
-    { label: '3rd Grade', value: '3rd Grade' },
-    { label: '4th Grade', value: '4th Grade' },
-    { label: '5th Grade', value: '5th Grade' },
-    { label: '6th Grade', value: '6th Grade' }
+    { label: 'Select a grade', value: '-1' },
+    { label: '1st Grade', value: '1' },
+    { label: '2nd Grade', value: '2' },
+    { label: '3rd Grade', value: '3' },
+    { label: '4th Grade', value: '4' },
+    { label: '5th Grade', value: '5' },
+    { label: '6th Grade', value: '6' }
   ],
   'High School': [
-    { label: 'Select a grade', value: 'Unknown' },
-    { label: '6th Grade', value: '6th Grade' },
-    { label: '7th Grade', value: '7th Grade' },
-    { label: '8th Grade', value: '8th Grade' },
-    { label: '9th Grade', value: '9th Grade' },
-    { label: '10th Grade', value: '10th Grade' },
-    { label: '11th Grade', value: '11th Grade' },
-    { label: '12th Grade', value: '12th Grade' }
+    { label: 'Select a grade', value: '-1' },
+    { label: '6th Grade', value: '6' },
+    { label: '7th Grade', value: '7' },
+    { label: '8th Grade', value: '8' },
+    { label: '9th Grade', value: '9' },
+    { label: '10th Grade', value: '10' },
+    { label: '11th Grade', value: '11' },
+    { label: '12th Grade', value: '12' }
   ],
   University: [
-    { label: 'Select a grade', value: 'Unknown' },
-    { label: '1st Grade', value: '1st Grade' },
-    { label: '2nd Grade', value: '2nd Grade' },
-    { label: '3rd Grade', value: '3rd Grade' },
-    { label: '4th Grade', value: '4th Grade' },
-    { label: '5th Grade', value: '5th Grade' },
-    { label: '6th Grade', value: '6th Grade' }
+    { label: 'Select a grade', value: '-1' },
+    { label: '1st Grade', value: '1' },
+    { label: '2nd Grade', value: '2' },
+    { label: '3rd Grade', value: '3' },
+    { label: '4th Grade', value: '4' },
+    { label: '5th Grade', value: '5' },
+    { label: '6th Grade', value: '6' }
   ],
   Postgraduate: [
-    { label: 'Select a grade', value: 'Unknown' },
-    { label: '1st Grade', value: '1st Grade' },
-    { label: '2nd Grade', value: '2nd Grade' },
-    { label: '3rd Grade', value: '3rd Grade' },
-    { label: '4th Grade', value: '4th Grade' }
+    { label: 'Select a grade', value: '-1' },
+    { label: '1st Grade', value: '1' },
+    { label: '2nd Grade', value: '2' },
+    { label: '3rd Grade', value: '3' },
+    { label: '4th Grade', value: '4' }
   ]
 }
 
 const studyPlanFormSchema = z.object({
   level: z.string().refine(v => v !== 'Unknown', 'Please select a level'),
-  grade: z.string().refine(v => v !== 'Unknown', 'Please select a grade'),
+  grade: z.string().refine(v => v !== '-1', 'Please select a grade'),
   subject: z
     .string()
     .nonempty('Please enter a subject')
@@ -143,35 +142,41 @@ function FieldIconGroup({
   )
 }
 
-export function StudyPlanGeneratorForm() {
+interface StudyPlanGeneratorFormProps {
+  onSubmit: (data: GenerateStudyPlanForm) => void
+  loading?: boolean
+}
+
+export function StudyPlanGeneratorForm({
+  onSubmit,
+  loading
+}: StudyPlanGeneratorFormProps) {
   const [grades, setGrades] = useState<OptionData[]>([
-    { label: 'Select a grade', value: 'Unknown' }
+    { label: 'Select a grade', value: '-1' }
   ])
 
   const { handleSubmit, control } = useForm<GenerateStudyPlanForm>({
     resolver: zodResolver(studyPlanFormSchema),
     defaultValues: {
       level: 'Unknown',
-      grade: 'Unknown',
+      grade: '-1',
       subject: ''
     }
   })
 
-  function onSelectLevel(level: string | null) {
+  function onSelectLevel(
+    field: ControllerRenderProps<
+      {
+        level: string
+        grade: string
+        subject: string
+      },
+      'level' | 'grade' | 'subject'
+    >,
+    level: string | null
+  ) {
     setGrades(level ? gradesByLevel[level] : [])
-  }
-
-  const { generateStudyPlan, loading } = useGenerateStudyPlan()
-
-  async function onSubmit({ level, grade, subject }: GenerateStudyPlanForm) {
-    await generateStudyPlan(level, grade, subject)
-    toast('Success!', {
-      description: <p>Your plan is being generated right now!</p>,
-      position: 'bottom-right',
-      classNames: {
-        content: 'flex flex-col gap-2 bg-emerald-700 rounded-sm'
-      }
-    })
+    field.onChange(level)
   }
 
   return (
@@ -192,9 +197,10 @@ export function StudyPlanGeneratorForm() {
               render={(field, fieldState) => (
                 <Select
                   aria-invalid={fieldState.invalid}
-                  {...field}
                   id="level"
-                  onValueChange={onSelectLevel}
+                  name={field.name}
+                  value={field.value}
+                  onValueChange={value => onSelectLevel(field, value)}
                   items={levels}>
                   <SelectTrigger className="w-full">
                     <SelectValue />
@@ -220,8 +226,10 @@ export function StudyPlanGeneratorForm() {
               render={(field, fieldState) => (
                 <Select
                   aria-invalid={fieldState.invalid}
-                  {...field}
                   id="grade"
+                  name={field.name}
+                  onValueChange={field.onChange}
+                  value={field.value}
                   items={grades}
                   disabled={grades.length === 1}>
                   <SelectTrigger className="w-full">
@@ -277,16 +285,50 @@ function StudyPlanLoading() {
   return (
     <div className="flex flex-col items-center justify-center p-8">
       <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-      <Spinner />
       <p className="mt-4 text-lg font-medium text-slate-700">
-        Generating your study plan...
+        Requesting your study plan...
       </p>
     </div>
   )
 }
 
 export function StudyPlanGenerator() {
-  const { error, currentStudyPlan, loading } = useGenerateStudyPlan()
+  const { error, studyPlanId, loading, generateStudyPlan } =
+    useGenerateStudyPlan()
+
+  useEffect(() => {
+    if (error) {
+      toast.error('Error', {
+        description: (
+          <p className="text-slate-800">
+            There was an error generating your study plan. Please try again.
+          </p>
+        ),
+        position: 'bottom-right',
+        classNames: {
+          content: 'text-red-700',
+          icon: 'text-red-700'
+        }
+      })
+    }
+  }, [error])
+
+  async function onSubmit({ level, grade, subject }: GenerateStudyPlanForm) {
+    await generateStudyPlan(subject, level, parseInt(grade))
+    toast.success('Success!', {
+      description: (
+        <p className="text-slate-800">
+          Your plan is being generated right now!
+        </p>
+      ),
+      position: 'bottom-right',
+      classNames: {
+        content: 'text-emerald-700',
+        icon: 'text-emerald-700'
+      }
+    })
+  }
+
   return (
     <>
       <StudyPlanNavbar />
@@ -295,16 +337,22 @@ export function StudyPlanGenerator() {
           alignContent="center"
           title="Generate New Plan"
           subtitle="Time to train your brain!">
-          {loading && <StudyPlanLoading />}
-          {!currentStudyPlan && <StudyPlanGeneratorForm />}
-          {currentStudyPlan && (
-            <NavLink to={`/study-plan/${currentStudyPlan.id}`} end>
-              Go to your study plan
-            </NavLink>
-          )}
-          {error && (
-            <p className="text-red-600 text-sm font-medium mt-4">{error}</p>
-          )}
+          <div className="w-full flex flex-col items-center justify-center gap-4">
+            {loading && <StudyPlanLoading />}
+            {!studyPlanId && !loading && (
+              <StudyPlanGeneratorForm onSubmit={onSubmit} loading={loading} />
+            )}
+            {studyPlanId && (
+              <Button variant="primary">
+                <NavLink to={`/study-plan/${studyPlanId}`} end>
+                  Go to your study plan
+                </NavLink>
+              </Button>
+            )}
+            {error && (
+              <p className="text-red-600 text-sm font-medium mt-4">{error}</p>
+            )}
+          </div>
         </Content>
       </MainContainer>
     </>

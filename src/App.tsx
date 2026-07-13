@@ -1,8 +1,13 @@
 import './App.css'
 import { AppRouter } from './app/router'
+import { Toaster } from './components/ui/sonner'
 
 function App() {
-  return <AppRouter />
+  return (
+    <>
+      <Toaster /> <AppRouter />
+    </>
+  )
 }
 
 export default App

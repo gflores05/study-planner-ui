@@ -3,17 +3,17 @@ import type { TopicDTO } from './topic.dto'
 export type GenerateStudyPlanRequest = {
   subject: string
   level: string
-  grade: string
+  grade: number
 }
 
 export type GenerateStudyPlanResponse = {
-  id: string
+  study_plan_id: string
 }
 
 export type StudyPlanDTO = {
   id: string
   subject: string
   level: string
-  grade: string
+  grade: number
   topics: TopicDTO[]
 }
