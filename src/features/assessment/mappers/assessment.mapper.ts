@@ -7,8 +7,12 @@ export const AssessmentMapper = {
     id: dto.id,
     score: dto.score,
     status: dto.status,
-    startedOn: dto.started_on ? new Date(dto.started_on) : undefined,
-    completedOn: dto.completed_on ? new Date(dto.completed_on) : undefined,
+    startedOn: dto.started_on
+      ? new Date(dto.started_on).toISOString()
+      : undefined,
+    completedOn: dto.completed_on
+      ? new Date(dto.completed_on).toISOString()
+      : undefined,
     topicId: dto.topic_id,
     questions: dto.questions.map(QuestionMapper.fromDTO)
   })

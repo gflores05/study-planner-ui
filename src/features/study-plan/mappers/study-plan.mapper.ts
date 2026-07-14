@@ -1,5 +1,5 @@
-import type { StudyPlanDTO } from '../dtos'
-import type { StudyPlan } from '../types'
+import { type StudyPlanDTO, StudyPlanDTOStatus } from '../dtos'
+import { type StudyPlan, StudyPlanStatus } from '../types'
 import { TopicMapper } from './topic.mapper'
 
 export const StudyPlanMapper = {
@@ -8,6 +8,22 @@ export const StudyPlanMapper = {
     subject: dto.subject,
     level: dto.level,
     grade: dto.grade,
-    topics: dto.topics.map(TopicMapper.fromDTO)
+    topics: dto.topics.map(TopicMapper.fromDTO),
+    status: mapStudyPlanDTOStatus(dto.status)
   })
+}
+
+function mapStudyPlanDTOStatus(status: StudyPlanDTOStatus): StudyPlanStatus {
+  switch (status) {
+    case StudyPlanDTOStatus.PENDING:
+      return StudyPlanStatus.PENDING
+    case StudyPlanDTOStatus.GENERATING:
+      return StudyPlanStatus.GENERATING
+    case StudyPlanDTOStatus.COMPLETED:
+      return StudyPlanStatus.COMPLETED
+    case StudyPlanDTOStatus.FAILED:
+      return StudyPlanStatus.FAILED
+    default:
+      return StudyPlanStatus.UNKNOWN
+  }
 }

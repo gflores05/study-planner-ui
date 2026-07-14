@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { StudyPlanNavbar } from '@/features/study-plan'
+import { StudyPlanNavbar, StudyPlanStatus } from '@/features/study-plan'
 import { type IconProp } from '@fortawesome/fontawesome-svg-core'
 import {
   faBookOpen,
@@ -40,6 +40,7 @@ import { toast } from 'sonner'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { NavLink } from 'react-router'
+import type { Subscription } from 'rxjs'
 
 type OptionData = { label: string; value: string | null }
 
@@ -292,9 +293,49 @@ function StudyPlanLoading() {
   )
 }
 
+interface ErrorMessageProps {
+  children: React.ReactNode
+}
+export function ErrorMessage({ children }: ErrorMessageProps) {
+  return <p className="text-red-600 text-sm font-medium mt-4">{children}</p>
+}
+
+interface StatusMessageProps {
+  children: React.ReactNode
+}
+export function StatusMessage({ children }: StatusMessageProps) {
+  return <p className="text-slate-600 text-sm font-medium mt-4">{children}</p>
+}
+
 export function StudyPlanGenerator() {
-  const { error, studyPlanId, loading, generateStudyPlan } =
-    useGenerateStudyPlan()
+  const {
+    error,
+    studyPlan,
+    loading,
+    generateStudyPlan,
+    fetchStudyPlan,
+    wsClient
+  } = useGenerateStudyPlan()
+
+  useEffect(() => {
+    let eventSubscription: Subscription
+    if (wsClient) {
+      eventSubscription = wsClient.events$.subscribe(async event => {
+        switch (event.event_name) {
+          case 'ReportStudyPlanGeneratedCommand':
+            await fetchStudyPlan()
+            break
+        }
+      })
+    }
+
+    return () => {
+      if (wsClient) {
+        wsClient.dispose()
+        eventSubscription.unsubscribe()
+      }
+    }
+  }, [wsClient])
 
   useEffect(() => {
     if (error) {
@@ -339,19 +380,33 @@ export function StudyPlanGenerator() {
           subtitle="Time to train your brain!">
           <div className="w-full flex flex-col items-center justify-center gap-4">
             {loading && <StudyPlanLoading />}
-            {!studyPlanId && !loading && (
+            {!studyPlan && !loading && (
               <StudyPlanGeneratorForm onSubmit={onSubmit} loading={loading} />
             )}
-            {studyPlanId && (
-              <Button variant="primary">
-                <NavLink to={`/study-plan/${studyPlanId}`} end>
-                  Go to your study plan
-                </NavLink>
-              </Button>
+            {studyPlan && (
+              <>
+                {studyPlan.status === StudyPlanStatus.COMPLETED && (
+                  <Button variant="primary">
+                    <NavLink to={`/study-plan/${studyPlan.id}`} end>
+                      Go to your study plan
+                    </NavLink>
+                  </Button>
+                )}
+                {studyPlan.status === StudyPlanStatus.PENDING ||
+                  (studyPlan.status === StudyPlanStatus.GENERATING && (
+                    <StatusMessage>
+                      Your study plan is being genereted...
+                    </StatusMessage>
+                  ))}
+                {studyPlan.status === StudyPlanStatus.FAILED ||
+                  (studyPlan.status === StudyPlanStatus.UNKNOWN && (
+                    <ErrorMessage>
+                      Your study plan has failed to generate.
+                    </ErrorMessage>
+                  ))}
+              </>
             )}
-            {error && (
-              <p className="text-red-600 text-sm font-medium mt-4">{error}</p>
-            )}
+            {error && <ErrorMessage>{error}</ErrorMessage>}
           </div>
         </Content>
       </MainContainer>

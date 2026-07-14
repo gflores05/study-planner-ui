@@ -15,7 +15,7 @@ export type Assessment = {
   status: AssessmentStatus
   score?: number
   questions: Question[]
-  startedOn?: Date
-  completedOn?: Date
+  startedOn?: string
+  completedOn?: string
   topicId: string
 }

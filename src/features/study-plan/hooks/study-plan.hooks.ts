@@ -7,6 +7,7 @@ import {
   selectStudyPlanLoading
 } from '../store'
 import { useEffect, useState } from 'react'
+import { WebSocketClient } from '@/services/ws.client'
 
 export function useStudyPlan(id: string) {
   const dispatch = useAppDispatch()
@@ -25,9 +26,29 @@ export function useStudyPlan(id: string) {
 
 export function useGenerateStudyPlan() {
   const [studyPlanId, setStudyPlanId] = useState<string | null>(null)
+  const [wsClient, setWsClient] = useState<WebSocketClient | null>(null)
   const dispatch = useAppDispatch()
+  const studyPlan = useAppSelector(selectCurrentStudyPlan)
   const loading = useAppSelector(selectStudyPlanLoading)
   const error = useAppSelector(selectStudyPlanError)
+
+  async function fetchStudyPlan() {
+    if (studyPlanId) {
+      await dispatch(getStudyPlan(studyPlanId))
+    }
+  }
+
+  useEffect(() => {
+    if (studyPlanId) {
+      // Fetch Requested Study Plan
+      fetchStudyPlan()
+
+      // Listen for updates
+      const wsClient = new WebSocketClient(studyPlanId)
+
+      setWsClient(wsClient)
+    }
+  }, [studyPlanId])
 
   async function generateStudyPlan(
     subject: string,
@@ -40,5 +61,13 @@ export function useGenerateStudyPlan() {
     setStudyPlanId(id)
   }
 
-  return { generateStudyPlan, studyPlanId, loading, error }
+  return {
+    generateStudyPlan,
+    fetchStudyPlan,
+    studyPlanId,
+    studyPlan,
+    loading,
+    error,
+    wsClient
+  }
 }
