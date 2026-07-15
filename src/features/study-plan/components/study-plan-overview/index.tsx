@@ -33,8 +33,8 @@ export function StudyPlanOverview() {
         <NewPlanBanner />
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           {studyPlan && <PlanInfo studyPlan={studyPlan} />}
+          {studyPlan && <PerformanceInfo studyPlan={studyPlan} />}
           {error && <ErrorMessage>{error}</ErrorMessage>}
-          <PerformanceInfo />
         </div>
       </MainContainer>
     </>
