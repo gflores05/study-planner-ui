@@ -7,6 +7,6 @@ export interface RealtimeEventPayload {
 }
 
 export interface RealtimeEvent {
-  event_name: RealTimeEventName
+  event: RealTimeEventName
   payload: RealtimeEventPayload
 }

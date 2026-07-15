@@ -282,17 +282,6 @@ export function StudyPlanGeneratorForm({
   )
 }
 
-function StudyPlanLoading() {
-  return (
-    <div className="flex flex-col items-center justify-center p-8">
-      <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-indigo-500"></div>
-      <p className="mt-4 text-lg font-medium text-slate-700">
-        Requesting your study plan...
-      </p>
-    </div>
-  )
-}
-
 interface ErrorMessageProps {
   children: React.ReactNode
 }
@@ -321,7 +310,8 @@ export function StudyPlanGenerator() {
     let eventSubscription: Subscription
     if (wsClient) {
       eventSubscription = wsClient.events$.subscribe(async event => {
-        switch (event.event_name) {
+        console.log('receiving realtime event ', JSON.stringify(event))
+        switch (event.event) {
           case 'ReportStudyPlanGeneratedCommand':
             await fetchStudyPlan()
             break
@@ -379,7 +369,9 @@ export function StudyPlanGenerator() {
           title="Generate New Plan"
           subtitle="Time to train your brain!">
           <div className="w-full flex flex-col items-center justify-center gap-4">
-            {loading && <StudyPlanLoading />}
+            {loading && (
+              <StatusMessage>Requesting study plan....</StatusMessage>
+            )}
             {!studyPlan && !loading && (
               <StudyPlanGeneratorForm onSubmit={onSubmit} loading={loading} />
             )}
