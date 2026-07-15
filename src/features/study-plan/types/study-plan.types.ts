@@ -18,4 +18,5 @@ export type StudyPlan = {
   grade: number
   topics: Topic[]
   status: StudyPlanStatus
+  createdOn: string
 }

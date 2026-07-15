@@ -28,4 +28,5 @@ export type StudyPlanDTO = {
   grade: number
   topics: TopicDTO[]
   status: StudyPlanDTOStatus
+  created_on: string
 }

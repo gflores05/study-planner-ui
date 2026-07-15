@@ -9,19 +9,17 @@ import {
 import { useEffect, useState } from 'react'
 import { WebSocketClient } from '@/services/ws.client'
 
-export function useStudyPlan(id: string) {
+export function useStudyPlan() {
   const dispatch = useAppDispatch()
-  const currentStudyPlan = useAppSelector(selectCurrentStudyPlan)
+  const studyPlan = useAppSelector(selectCurrentStudyPlan)
   const loading = useAppSelector(selectStudyPlanLoading)
   const error = useAppSelector(selectStudyPlanError)
 
-  useEffect(() => {
-    if (id) {
-      dispatch(getStudyPlan(id))
-    }
-  }, [id, dispatch])
+  async function fetchStudyPlan(id: string) {
+    await dispatch(getStudyPlan(id))
+  }
 
-  return { currentStudyPlan, loading, error }
+  return { studyPlan, fetchStudyPlan, loading, error }
 }
 
 export function useGenerateStudyPlan() {

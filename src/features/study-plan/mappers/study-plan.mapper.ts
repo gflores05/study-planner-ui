@@ -9,7 +9,8 @@ export const StudyPlanMapper = {
     level: dto.level,
     grade: dto.grade,
     topics: dto.topics.map(TopicMapper.fromDTO),
-    status: mapStudyPlanDTOStatus(dto.status)
+    status: mapStudyPlanDTOStatus(dto.status),
+    createdOn: new Date(dto.created_on).toISOString()
   })
 }
 

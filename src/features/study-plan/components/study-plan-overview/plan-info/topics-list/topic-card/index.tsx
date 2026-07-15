@@ -8,8 +8,20 @@ import {
   faLock,
   faPenToSquare
 } from '@fortawesome/free-solid-svg-icons'
+import type { Topic } from '@/features/study-plan/types'
+import { useMemo } from 'react'
+import { NavLink } from 'react-router'
 
-export function CompletedTopicCard() {
+interface CompletedTopicCardProps {
+  topic: Topic
+  order: number
+}
+
+export function CompletedTopicCard({ topic, order }: CompletedTopicCardProps) {
+  const subtopics = useMemo(() => {
+    return topic.subTopics.map(st => st.title).join(', ')
+  }, [topic])
+
   return (
     <Card hover>
       <div className="flex items-start justify-between gap-4">
@@ -19,28 +31,40 @@ export function CompletedTopicCard() {
           </div>
           <div>
             <h3 className="font-semibold line-through text-slate-400">
-              Tema 1: Historia y Fundamentos
+              Topic {order}: {topic.title}
             </h3>
-            <p className="mt-1 text-sm text-slate-500">
-              Orígenes de la computación, el Test de Turing y los primeros
-              sistemas expertos.
-            </p>
+            <p className="mt-1 text-sm text-slate-500">{subtopics}</p>
             <div className="mt-3 flex gap-2">
               <span className="inline-flex items-center gap-1 rounded-md bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600">
-                <FontAwesomeIcon icon={faClock} /> 2 horas
+                <FontAwesomeIcon icon={faClock} /> 2 hours
               </span>
             </div>
           </div>
         </div>
         <Button variant="success" size="small">
-          <FontAwesomeIcon icon={faAward} className="mr-1" /> Examen: 90/100
+          <FontAwesomeIcon icon={faAward} className="mr-1" /> Exam:{' '}
+          {topic.assessment?.score}/100
         </Button>
       </div>
     </Card>
   )
 }
 
-export function InProgressTopicCard() {
+interface InProgressTopicCardProps {
+  topic: Topic
+  order: number
+  studyPlanId: string
+}
+
+export function InProgressTopicCard({
+  topic,
+  order,
+  studyPlanId
+}: InProgressTopicCardProps) {
+  const subtopics = useMemo(() => {
+    return topic.subTopics.map(st => st.title).join(', ')
+  }, [topic])
+
   return (
     <Card selected>
       <div className="flex items-start justify-between gap-4">
@@ -50,31 +74,41 @@ export function InProgressTopicCard() {
           </div>
           <div>
             <span className="inline-block rounded-md bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-700 mb-1">
-              Estudiando ahora
+              Studying now
             </span>
             <h3 className="font-semibold text-slate-900">
-              Tema 2: Redes Neuronales Artificiales
+              Topic {order}: {topic.title}
             </h3>
-            <p className="mt-1 text-sm text-slate-600">
-              Perceptrón simple, funciones de activación y propagación hacia
-              atrás (Backpropagation).
-            </p>
+            <p className="mt-1 text-sm text-slate-600">{subtopics}</p>
             <div className="mt-3 flex gap-2">
               <span className="inline-flex items-center gap-1 rounded-md bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600">
-                <FontAwesomeIcon icon={faClock} /> 4 horas
+                <FontAwesomeIcon icon={faClock} /> 4 hours
               </span>
             </div>
           </div>
         </div>
         <Button variant="primary" size="small">
-          <FontAwesomeIcon icon={faPenToSquare} /> Tomar Examen
+          <NavLink
+            to={`/study-plan/${studyPlanId}/assessment/${topic.assessment?.id}`}
+            end>
+            <FontAwesomeIcon icon={faPenToSquare} /> Take Exam
+          </NavLink>
         </Button>
       </div>
     </Card>
   )
 }
 
-export function PendingTopicCard() {
+interface PendingTopicCardProps {
+  topic: Topic
+  order: number
+}
+
+export function PendingTopicCard({ topic, order }: PendingTopicCardProps) {
+  const subtopics = useMemo(() => {
+    return topic.subTopics.map(st => st.title).join(', ')
+  }, [topic])
+
   return (
     <Card disabled>
       <div className="flex items-start justify-between gap-4">
@@ -84,15 +118,12 @@ export function PendingTopicCard() {
           </div>
           <div>
             <h3 className="font-semibold text-slate-700">
-              Tema 3: Modelos de Lenguaje (LLMs)
+              Topic {order}: {topic.title}
             </h3>
-            <p className="mt-1 text-sm text-slate-400">
-              Arquitectura Transformer, Mecanismos de Atención y embeddings de
-              texto.
-            </p>
+            <p className="mt-1 text-sm text-slate-400">{subtopics}</p>
             <div className="mt-3 flex gap-2">
               <span className="inline-flex items-center gap-1 rounded-md bg-slate-50 px-2 py-1 text-xs font-medium text-slate-400">
-                <FontAwesomeIcon icon={faClock} /> 3 horas
+                <FontAwesomeIcon icon={faClock} /> 3 hours
               </span>
             </div>
           </div>

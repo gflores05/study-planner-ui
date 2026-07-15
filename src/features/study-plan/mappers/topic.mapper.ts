@@ -6,6 +6,7 @@ import { SubTopicMapper } from './sub-topic.mapper'
 export const TopicMapper = {
   fromDTO: (dto: TopicDTO): Topic => {
     return {
+      id: dto.id,
       title: dto.title,
       subTopics: dto.sub_topics.map(SubTopicMapper.fromDTO),
       assessment: dto.assessment

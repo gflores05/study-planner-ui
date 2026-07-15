@@ -2,6 +2,7 @@ import { faUserGraduate } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Navbar } from '@/components'
 import { useMemo } from 'react'
+import { Spinner } from '@/components/ui/spinner'
 
 interface StudyPlanLevelProps {
   level: string
@@ -41,14 +42,16 @@ function Brand() {
 
 interface StudyPlanNavbarProps {
   level?: string
+  loading?: boolean
 }
 
-export function StudyPlanNavbar({ level }: StudyPlanNavbarProps) {
+export function StudyPlanNavbar({ level, loading }: StudyPlanNavbarProps) {
   return (
     <Navbar compact>
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Brand />
-        {level && <StudyPlanLevel level={level} />}
+        {!loading && level && <StudyPlanLevel level={level} />}
+        {loading && <Spinner />}
       </div>
     </Navbar>
   )

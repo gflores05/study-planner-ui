@@ -6,9 +6,9 @@ export function AppRouter() {
   return (
     <Routes>
       <Route index element={<StudyPlanGenerator />} />
-      <Route path="study-plan/:assessmentId" element={<StudyPlanOverview />} />
+      <Route path="study-plan/:studyPlanId" element={<StudyPlanOverview />} />
       <Route
-        path="assessment/:assessmentId"
+        path="study-plan/:studyPlanId/assessment/:assessmentId"
         element={<AssessmentResolution />}
       />
     </Routes>
