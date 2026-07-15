@@ -22,6 +22,10 @@ export function CompletedTopicCard({ topic, order }: CompletedTopicCardProps) {
     return topic.subTopics.map(st => st.title).join(', ')
   }, [topic])
 
+  const hours = useMemo(() => {
+    return topic.subTopics.length * 2
+  }, [topic])
+
   return (
     <Card hover>
       <div className="flex items-start justify-between gap-4">
@@ -36,7 +40,7 @@ export function CompletedTopicCard({ topic, order }: CompletedTopicCardProps) {
             <p className="mt-1 text-sm text-slate-500">{subtopics}</p>
             <div className="mt-3 flex gap-2">
               <span className="inline-flex items-center gap-1 rounded-md bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600">
-                <FontAwesomeIcon icon={faClock} /> 2 hours
+                <FontAwesomeIcon icon={faClock} /> {hours} hours
               </span>
             </div>
           </div>
@@ -65,6 +69,10 @@ export function InProgressTopicCard({
     return topic.subTopics.map(st => st.title).join(', ')
   }, [topic])
 
+  const hours = useMemo(() => {
+    return topic.subTopics.length * 2
+  }, [topic])
+
   return (
     <Card selected>
       <div className="flex items-start justify-between gap-4">
@@ -82,7 +90,7 @@ export function InProgressTopicCard({
             <p className="mt-1 text-sm text-slate-600">{subtopics}</p>
             <div className="mt-3 flex gap-2">
               <span className="inline-flex items-center gap-1 rounded-md bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600">
-                <FontAwesomeIcon icon={faClock} /> 4 hours
+                <FontAwesomeIcon icon={faClock} /> {hours} hours
               </span>
             </div>
           </div>
@@ -109,6 +117,10 @@ export function PendingTopicCard({ topic, order }: PendingTopicCardProps) {
     return topic.subTopics.map(st => st.title).join(', ')
   }, [topic])
 
+  const hours = useMemo(() => {
+    return topic.subTopics.length * 2
+  }, [topic])
+
   return (
     <Card disabled>
       <div className="flex items-start justify-between gap-4">
@@ -123,7 +135,7 @@ export function PendingTopicCard({ topic, order }: PendingTopicCardProps) {
             <p className="mt-1 text-sm text-slate-400">{subtopics}</p>
             <div className="mt-3 flex gap-2">
               <span className="inline-flex items-center gap-1 rounded-md bg-slate-50 px-2 py-1 text-xs font-medium text-slate-400">
-                <FontAwesomeIcon icon={faClock} /> 3 hours
+                <FontAwesomeIcon icon={faClock} /> {hours} hours
               </span>
             </div>
           </div>
