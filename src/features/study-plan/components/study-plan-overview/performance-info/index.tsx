@@ -1,5 +1,5 @@
 import type { StudyPlan } from '@/features/study-plan/types'
-import { IASuggestion } from './ia-suggestion'
+import { AISuggestion } from './ai-suggestion'
 import { PerformanceCard } from './performance-card'
 
 interface PerformanceInfoProps {
@@ -10,7 +10,7 @@ export function PerformanceInfo({ studyPlan }: PerformanceInfoProps) {
   return (
     <div className="space-y-6">
       <PerformanceCard studyPlan={studyPlan} />
-      <IASuggestion />
+      <AISuggestion studyPlan={studyPlan} />
     </div>
   )
 }
