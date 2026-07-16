@@ -2,28 +2,36 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faClock } from '@fortawesome/free-regular-svg-icons'
 import { Button, Navbar } from '@/components'
+import type { Topic } from '@/features/topic'
+import { Spinner } from '@/components/ui/spinner'
+import { NavLink } from 'react-router'
 
 export function AssessmentExam() {
   return (
     <span className="text-xs font-semibold tracking-wider text-indigo-600 uppercase">
-      Examen · Tema 2
+      Exam
     </span>
   )
 }
 
-export function AssessmentTopic() {
+interface AssessmentTopicProps {
+  children: string
+}
+export function AssessmentTopic({ children }: AssessmentTopicProps) {
   return (
-    <h1 className="text-lg font-bold text-slate-900 sm:text-xl">
-      Redes Neuronales Artificiales
-    </h1>
+    <h1 className="text-lg font-bold text-slate-900 sm:text-xl">{children}</h1>
   )
 }
 
-export function AssessmentTitle() {
+interface AssessmentTitleProps {
+  title: string
+}
+
+export function AssessmentTitle({ title }: AssessmentTitleProps) {
   return (
     <div>
       <AssessmentExam />
-      <AssessmentTopic />
+      <AssessmentTopic>{title}</AssessmentTopic>
     </div>
   )
 }
@@ -40,22 +48,34 @@ export function AssessmentTime() {
   )
 }
 
-export function AssessmentCloseButton() {
+interface AssessmentCloseButtonProps {
+  studyPlanId: string
+}
+export function AssessmentCloseButton({
+  studyPlanId
+}: AssessmentCloseButtonProps) {
   return (
     <Button title="Salir del examen" size="icon">
-      <FontAwesomeIcon className="text-lg px-1" icon={faXmark} />
+      <NavLink to={`/study-plan/${studyPlanId}`}>
+        <FontAwesomeIcon className="text-lg px-1" icon={faXmark} />
+      </NavLink>
     </Button>
   )
 }
 
-export function AssessmentNavbar() {
+interface AssessmentNavbarProps {
+  topic: Topic | null
+}
+
+export function AssessmentNavbar({ topic }: AssessmentNavbarProps) {
   return (
     <Navbar>
       <div className="mx-auto flex max-w-4xl items-center justify-between">
-        <AssessmentTitle />
+        {topic ? <AssessmentTitle title={topic?.title} /> : <Spinner />}
+
         <div className="flex items-center gap-4">
           <AssessmentTime />
-          <AssessmentCloseButton />
+          {topic && <AssessmentCloseButton studyPlanId={topic.studyPlanId} />}
         </div>
       </div>
     </Navbar>

@@ -1,7 +1,7 @@
-import { AssessmentMapper } from '@/features/assessment/mappers/assessment.mapper'
-import type { TopicDTO } from '../dtos'
-import type { Topic } from '../types'
+import { AssessmentMapper } from '@/features/assessment'
 import { SubTopicMapper } from './sub-topic.mapper'
+import type { TopicDTO } from '../dtos'
+import type { Topic } from '../types/topic.types'
 
 export const TopicMapper = {
   fromDTO: (dto: TopicDTO): Topic => {

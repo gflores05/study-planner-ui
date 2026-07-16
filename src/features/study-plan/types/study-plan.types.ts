@@ -1,4 +1,4 @@
-import type { Topic } from './topic.types'
+import type { Topic } from '@/features/topic'
 
 export const StudyPlanStatus = {
   PENDING: 'PENDING',

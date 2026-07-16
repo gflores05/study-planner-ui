@@ -1,4 +1,4 @@
-import type { Topic } from '@/features/study-plan/types'
+import type { Topic } from '@/features/topic/types'
 import {
   CompletedTopicCard,
   InProgressTopicCard,

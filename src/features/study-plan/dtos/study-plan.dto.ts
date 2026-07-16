@@ -1,4 +1,4 @@
-import type { TopicDTO } from './topic.dto'
+import type { TopicDTO } from '@/features/topic'
 
 export type GenerateStudyPlanRequest = {
   subject: string

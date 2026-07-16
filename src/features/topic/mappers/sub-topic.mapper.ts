@@ -1,5 +1,5 @@
-import type { SubTopicDTO } from '../dtos'
-import type { SubTopic } from '../types'
+import type { SubTopicDTO } from '../../study-plan/dtos'
+import type { SubTopic } from '../../study-plan/types'
 
 export const SubTopicMapper = {
   fromDTO: (dto: SubTopicDTO): SubTopic => ({

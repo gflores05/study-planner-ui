@@ -19,3 +19,12 @@ export type AssessmentDTO = {
   completed_on?: string
   topic_id: string
 }
+
+export type AssessmentResponseDTO = {
+  assessment_id: string
+}
+
+export type AnswerQuestionResponseDTO = {
+  assessment_id: string
+  question_id: string
+}

@@ -1,6 +1,6 @@
 import { type StudyPlanDTO, StudyPlanDTOStatus } from '../dtos'
 import { type StudyPlan, StudyPlanStatus } from '../types'
-import { TopicMapper } from './topic.mapper'
+import { TopicMapper } from '@/features/topic'
 
 export const StudyPlanMapper = {
   fromDTO: (dto: StudyPlanDTO): StudyPlan => ({

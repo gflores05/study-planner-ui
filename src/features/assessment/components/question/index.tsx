@@ -101,7 +101,6 @@ export function QuestionCard() {
         <QuestionOption
           option="B"
           text="Introducir no linealidad en la red para que pueda aprender patrones complejos."
-          selected
         />
         <QuestionOption
           option="C"

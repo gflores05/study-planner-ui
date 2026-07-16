@@ -8,7 +8,7 @@ import {
   faLock,
   faPenToSquare
 } from '@fortawesome/free-solid-svg-icons'
-import type { Topic } from '@/features/study-plan/types'
+import type { Topic } from '@/features/topic/types'
 import { useMemo } from 'react'
 import { NavLink } from 'react-router'
 

@@ -1,27 +1,68 @@
 import { ProgressBar } from '@/components'
+import { useMemo } from 'react'
 
-export function AssessmentQuestionNumber() {
+interface AssessmentQuestionNumberProps {
+  current: number
+  total: number
+}
+
+export function AssessmentQuestionNumber({
+  current,
+  total
+}: AssessmentQuestionNumberProps) {
   return (
     <span className="font-medium text-slate-500">
-      Pregunta <span className="font-bold text-slate-900">3</span> de 10
+      Question <span className="font-bold text-slate-900">{current}</span> of{' '}
+      {total}
     </span>
   )
 }
 
-export function ProgressPercentage() {
+interface ProgressPercentageProps {
+  current: number
+  percentage: number
+  total: number
+}
+
+export function ProgressPercentage({
+  current,
+  percentage,
+  total
+}: ProgressPercentageProps) {
   return (
     <div className="flex items-center justify-between text-sm mb-2">
-      <AssessmentQuestionNumber />
-      <span className="font-semibold text-indigo-600">30% Completado</span>
+      <AssessmentQuestionNumber current={current} total={total} />
+      <span className="font-semibold text-indigo-600">
+        {percentage}% Completed
+      </span>
     </div>
   )
 }
 
-export function AssessmentProgress() {
+interface AssessmentProgressProps {
+  current: number
+  completed: number
+  total: number
+}
+
+export function AssessmentProgress({
+  completed,
+  total,
+  current
+}: AssessmentProgressProps) {
+  const percentage = useMemo(
+    () => (completed / total) * 100,
+    [total, completed]
+  )
+
   return (
     <div className="mb-8">
-      <ProgressPercentage />
-      <ProgressBar value={30} />
+      <ProgressPercentage
+        current={current}
+        total={total}
+        percentage={percentage}
+      />
+      <ProgressBar value={percentage} />
     </div>
   )
 }
