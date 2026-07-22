@@ -1,28 +1,38 @@
 import { ProgressBar, Title } from '@/components'
 import { TopicsList } from './topics-list'
-import type { StudyPlan } from '@/features/study-plan/types'
 import { useMemo } from 'react'
 import { AssessmentStatus } from '@/features/assessment'
+import { useStudyPlan } from '@/features/study-plan/hooks/study-plan.hooks'
 
-interface PlanInfoProps {
-  studyPlan: StudyPlan
-}
+export function PlanInfo() {
+  const { studyPlan } = useStudyPlan()
 
-export function PlanInfo({ studyPlan }: PlanInfoProps) {
   const createdOn = useMemo(() => {
+    if (!studyPlan) {
+      return
+    }
+
     return new Intl.DateTimeFormat('en-US', {
       dateStyle: 'full'
     }).format(new Date(studyPlan.createdOn))
   }, [studyPlan])
 
   const progress = useMemo(() => {
+    if (!studyPlan) {
+      return 0
+    }
+
     const all = studyPlan.topics.length
     const completed = studyPlan.topics.filter(
       t => t.assessment?.status === AssessmentStatus.COMPLETED
     ).length
 
-    return (completed / all) * 100
+    return Math.round((completed / all) * 100)
   }, [studyPlan])
+
+  if (!studyPlan) {
+    return null
+  }
 
   return (
     <div className="lg:col-span-2 space-y-6">
@@ -36,7 +46,7 @@ export function PlanInfo({ studyPlan }: PlanInfoProps) {
         }
       />
       <ProgressBar value={progress} />
-      <TopicsList topics={studyPlan.topics} studyPlanId={studyPlan.id} />
+      <TopicsList />
     </div>
   )
 }

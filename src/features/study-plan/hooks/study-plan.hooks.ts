@@ -6,7 +6,7 @@ import {
   selectStudyPlanError,
   selectStudyPlanLoading
 } from '../store'
-import { useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { WebSocketClient } from '@/services/ws.client'
 
 export function useStudyPlan() {
@@ -15,57 +15,32 @@ export function useStudyPlan() {
   const loading = useAppSelector(selectStudyPlanLoading)
   const error = useAppSelector(selectStudyPlanError)
 
-  async function fetchStudyPlan(id: string) {
-    await dispatch(getStudyPlan(id))
-  }
-
-  return { studyPlan, fetchStudyPlan, loading, error }
-}
-
-export function useGenerateStudyPlan() {
-  const [studyPlanId, setStudyPlanId] = useState<string | null>(null)
   const [wsClient, setWsClient] = useState<WebSocketClient | null>(null)
-  const dispatch = useAppDispatch()
-  const studyPlan = useAppSelector(selectCurrentStudyPlan)
-  const loading = useAppSelector(selectStudyPlanLoading)
-  const error = useAppSelector(selectStudyPlanError)
 
-  async function fetchStudyPlan() {
-    if (studyPlanId) {
-      await dispatch(getStudyPlan(studyPlanId))
-    }
+  async function connectWS(id: string) {
+    const wsClient = new WebSocketClient(id)
+
+    setWsClient(wsClient)
   }
 
-  useEffect(() => {
-    if (studyPlanId) {
-      // Fetch Requested Study Plan
-      fetchStudyPlan()
+  const generateStudyPlan = useCallback(
+    (subject: string, level: string, grade: number) =>
+      dispatch(requestStudyPlan({ subject, level, grade })).unwrap(),
+    [requestStudyPlan]
+  )
 
-      // Listen for updates
-      const wsClient = new WebSocketClient(studyPlanId)
-
-      setWsClient(wsClient)
-    }
-  }, [studyPlanId])
-
-  async function generateStudyPlan(
-    subject: string,
-    level: string,
-    grade: number
-  ) {
-    const id = await dispatch(
-      requestStudyPlan({ subject, level, grade })
-    ).unwrap()
-    setStudyPlanId(id)
-  }
+  const fetchStudyPlan = useCallback(
+    (id: string) => dispatch(getStudyPlan(id)),
+    [getStudyPlan]
+  )
 
   return {
-    generateStudyPlan,
-    fetchStudyPlan,
-    studyPlanId,
     studyPlan,
     loading,
     error,
-    wsClient
+    wsClient,
+    fetchStudyPlan,
+    generateStudyPlan,
+    connectWS
   }
 }

@@ -1,4 +1,4 @@
-import { Button, Content, MainContainer } from '@/components'
+import { Button, Content, ErrorMessage, MainContainer } from '@/components'
 import {
   FieldGroup,
   FieldSet,
@@ -28,7 +28,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useEffect, useState } from 'react'
-import { useGenerateStudyPlan } from '../../hooks/study-plan.hooks'
+import { useStudyPlan } from '../../hooks/study-plan.hooks'
 import {
   Controller,
   useForm,
@@ -282,13 +282,6 @@ export function StudyPlanGeneratorForm({
   )
 }
 
-interface ErrorMessageProps {
-  children: React.ReactNode
-}
-export function ErrorMessage({ children }: ErrorMessageProps) {
-  return <p className="text-red-600 text-sm font-medium mt-4">{children}</p>
-}
-
 interface StatusMessageProps {
   children: React.ReactNode
 }
@@ -301,30 +294,43 @@ export function StudyPlanGenerator() {
     error,
     studyPlan,
     loading,
+    wsClient,
     generateStudyPlan,
     fetchStudyPlan,
-    wsClient
-  } = useGenerateStudyPlan()
+    connectWS
+  } = useStudyPlan()
+
+  const [studyPlanId, setStudyPlanId] = useState<string | null>(null)
 
   useEffect(() => {
-    let eventSubscription: Subscription
+    if (studyPlanId) {
+      fetchStudyPlan(studyPlanId).then(() => connectWS(studyPlanId))
+    }
+  }, [studyPlanId])
+
+  useEffect(() => {
+    if (!studyPlan) {
+      return
+    }
+
     if (wsClient) {
+      let eventSubscription: Subscription
+
       eventSubscription = wsClient.events$.subscribe(async event => {
         switch (event.event) {
           case 'ReportStudyPlanGeneratedCommand':
-            await fetchStudyPlan()
+            await fetchStudyPlan(studyPlan.id)
             break
         }
       })
-    }
-
-    return () => {
-      if (wsClient) {
-        wsClient.dispose()
-        eventSubscription.unsubscribe()
+      return () => {
+        if (wsClient) {
+          wsClient.dispose()
+          eventSubscription.unsubscribe()
+        }
       }
     }
-  }, [wsClient])
+  }, [studyPlan, wsClient])
 
   useEffect(() => {
     if (error) {
@@ -344,7 +350,8 @@ export function StudyPlanGenerator() {
   }, [error])
 
   async function onSubmit({ level, grade, subject }: GenerateStudyPlanForm) {
-    await generateStudyPlan(subject, level, parseInt(grade))
+    const id = await generateStudyPlan(subject, level, parseInt(grade))
+    setStudyPlanId(id)
     toast.success('Success!', {
       description: (
         <p className="text-slate-800">

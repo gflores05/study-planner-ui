@@ -27,7 +27,5 @@ export class WebSocketClient {
 
   dispose() {
     this.socket.close()
-    this.events$.unsubscribe()
-    this.connectionEvents$.unsubscribe()
   }
 }

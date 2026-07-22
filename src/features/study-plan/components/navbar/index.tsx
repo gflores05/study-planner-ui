@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Navbar } from '@/components'
 import { useMemo } from 'react'
 import { Spinner } from '@/components/ui/spinner'
+import { useStudyPlan } from '../../hooks/study-plan.hooks'
 
 interface StudyPlanLevelProps {
   level: string
@@ -40,17 +41,14 @@ function Brand() {
   )
 }
 
-interface StudyPlanNavbarProps {
-  level?: string
-  loading?: boolean
-}
+export function StudyPlanNavbar() {
+  const { studyPlan, loading } = useStudyPlan()
 
-export function StudyPlanNavbar({ level, loading }: StudyPlanNavbarProps) {
   return (
     <Navbar compact>
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
         <Brand />
-        {!loading && level && <StudyPlanLevel level={level} />}
+        {!loading && studyPlan && <StudyPlanLevel level={studyPlan.level} />}
         {loading && <Spinner />}
       </div>
     </Navbar>

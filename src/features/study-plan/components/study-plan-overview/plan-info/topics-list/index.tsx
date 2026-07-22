@@ -1,4 +1,4 @@
-import type { Topic } from '@/features/topic/types'
+import { useStudyPlan } from '@/features/study-plan/hooks/study-plan.hooks'
 import {
   CompletedTopicCard,
   InProgressTopicCard,
@@ -6,18 +6,15 @@ import {
 } from './topic-card'
 import { AssessmentStatus } from '@/features/assessment'
 
-interface TopicsListProps {
-  studyPlanId: string
-  topics: Topic[]
-}
+export function TopicsList() {
+  const { studyPlan } = useStudyPlan()
 
-export function TopicsList({ topics, studyPlanId }: TopicsListProps) {
-  const current = topics.find(
+  const current = studyPlan?.topics.find(
     t => t.assessment?.status === AssessmentStatus.PENDING
   )
   return (
     <div className="space-y-4">
-      {topics.map((topic, index) => {
+      {studyPlan?.topics.map((topic, index) => {
         const order = index + 1
         if (!topic.assessment) {
           return null
@@ -29,7 +26,7 @@ export function TopicsList({ topics, studyPlanId }: TopicsListProps) {
               key={topic.id}
               topic={topic}
               order={order}
-              studyPlanId={studyPlanId}
+              studyPlanId={studyPlan.id}
             />
           )
         }
@@ -45,7 +42,7 @@ export function TopicsList({ topics, studyPlanId }: TopicsListProps) {
                 key={topic.id}
                 topic={topic}
                 order={order}
-                studyPlanId={studyPlanId}
+                studyPlanId={studyPlan.id}
               />
             )
           case AssessmentStatus.COMPLETED:

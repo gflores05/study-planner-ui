@@ -1,20 +1,20 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Card } from '@/components'
 import { faFire } from '@fortawesome/free-solid-svg-icons'
-import type { StudyPlan } from '@/features/study-plan/types'
 import { useMemo } from 'react'
 import { AssessmentStatus } from '@/features/assessment'
 import { diffDays } from '@/lib/date-utils'
+import { useStudyPlan } from '@/features/study-plan/hooks/study-plan.hooks'
 
-interface PerformanceCardProps {
-  studyPlan: StudyPlan
-}
+export function PerformanceCard() {
+  const { studyPlan } = useStudyPlan()
 
-export function PerformanceCard({ studyPlan }: PerformanceCardProps) {
   const completedAssessments = useMemo(() => {
-    return studyPlan.topics
-      .filter(t => t.assessment?.status === AssessmentStatus.COMPLETED)
-      .map(t => t.assessment)
+    return studyPlan
+      ? studyPlan.topics
+          .filter(t => t.assessment?.status === AssessmentStatus.COMPLETED)
+          .map(t => t.assessment)
+      : []
   }, [studyPlan])
 
   const average = useMemo(() => {
@@ -68,7 +68,7 @@ export function PerformanceCard({ studyPlan }: PerformanceCardProps) {
         <div className="flex items-center justify-between border-b border-slate-100 pb-3">
           <span className="text-sm text-slate-500">Completed Topics</span>
           <span className="font-bold text-slate-900">
-            {completedAssessments.length} of {studyPlan.topics.length}
+            {completedAssessments.length} of {studyPlan?.topics.length}
           </span>
         </div>
         <div className="flex items-center justify-between">
