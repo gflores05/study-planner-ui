@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Button, Card } from '@/components'
 import {
+  faArrowUpRightFromSquare,
   faAward,
   faBookOpen,
   faCircleCheck,
@@ -10,7 +11,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import type { Topic } from '@/features/topic/types'
 import { useMemo } from 'react'
-import { useNavigate } from 'react-router'
+import { Link, useNavigate } from 'react-router'
 import { useAssessment } from '@/features/assessment/hooks/assessment.hooks'
 import { AssessmentStatus } from '@/features/assessment'
 
@@ -103,8 +104,12 @@ export function InProgressTopicCard({
             <span className="inline-block rounded-md bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-700 mb-1">
               Studying now
             </span>
-            <h3 className="font-semibold text-slate-900">
-              Topic {order}: {topic.title}
+            <h3 className="font-semibold text-slate-900 hover:text-indigo-600">
+              <Link to={`/study-plan/${studyPlanId}/topic/${topic.id}`}>
+                {' '}
+                <FontAwesomeIcon icon={faArrowUpRightFromSquare} /> Topic{' '}
+                {order}: {topic.title}
+              </Link>
             </h3>
             <p className="mt-1 text-sm text-slate-600">{subtopics}</p>
             <div className="mt-3 flex gap-2">

@@ -7,4 +7,5 @@ export type Topic = {
   subTopics: SubTopic[]
   assessment?: Assessment
   studyPlanId: string
+  createdOn: string
 }

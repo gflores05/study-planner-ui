@@ -12,7 +12,8 @@ export const TopicMapper = {
       assessment: dto.assessment
         ? AssessmentMapper.fromDTO(dto.assessment)
         : undefined,
-      studyPlanId: dto.study_plan_id
+      studyPlanId: dto.study_plan_id,
+      createdOn: dto.created_on
     }
   }
 }

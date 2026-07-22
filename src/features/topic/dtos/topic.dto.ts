@@ -7,4 +7,5 @@ export type TopicDTO = {
   sub_topics: SubTopicDTO[]
   assessment?: AssessmentDTO
   study_plan_id: string
+  created_on: string
 }
