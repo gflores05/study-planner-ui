@@ -26,6 +26,7 @@ export function TopicsList({ topics, studyPlanId }: TopicsListProps) {
         if (topic.id === current?.id) {
           return (
             <InProgressTopicCard
+              key={topic.id}
               topic={topic}
               order={order}
               studyPlanId={studyPlanId}
@@ -35,17 +36,22 @@ export function TopicsList({ topics, studyPlanId }: TopicsListProps) {
 
         switch (topic.assessment.status) {
           case AssessmentStatus.PENDING:
-            return <PendingTopicCard topic={topic} order={order} />
+            return (
+              <PendingTopicCard key={topic.id} topic={topic} order={order} />
+            )
           case AssessmentStatus.IN_PROGRESS:
             return (
               <InProgressTopicCard
+                key={topic.id}
                 topic={topic}
                 order={order}
                 studyPlanId={studyPlanId}
               />
             )
           case AssessmentStatus.COMPLETED:
-            return <CompletedTopicCard topic={topic} order={order} />
+            return (
+              <CompletedTopicCard key={topic.id} topic={topic} order={order} />
+            )
         }
 
         return null

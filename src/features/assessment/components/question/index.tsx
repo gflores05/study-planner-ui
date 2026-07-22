@@ -1,7 +1,6 @@
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faLightbulb } from '@fortawesome/free-regular-svg-icons'
 import cx from 'classnames'
 import { Card } from '@/components/card'
+import type { Question } from '../../types'
 
 interface QuestionTextProps {
   children: React.ReactNode
@@ -14,26 +13,21 @@ function QuestionText({ children }: QuestionTextProps) {
   )
 }
 
-interface QuestionHintProps {
-  children: React.ReactNode
-}
-
-function QuestionHint({ children }: QuestionHintProps) {
-  return (
-    <p className="mt-2 text-sm text-slate-500 inline-flex items-center gap-1">
-      <FontAwesomeIcon icon={faLightbulb} className="text-indigo-500" />
-      {children}
-    </p>
-  )
-}
-
 interface QuestionOptionProps {
   option: string
   text: string
   selected?: boolean
+  name: string
+  onSelect: (value: string) => void
 }
 
-function QuestionOption({ option, text, selected }: QuestionOptionProps) {
+function QuestionOption({
+  option,
+  text,
+  selected,
+  name,
+  onSelect
+}: QuestionOptionProps) {
   return (
     <label
       className={cx(
@@ -51,7 +45,7 @@ function QuestionOption({ option, text, selected }: QuestionOptionProps) {
               'border border-slate-200 bg-slate-50 text-slate-500 group-hover:border-slate-300 group-hover:bg-white',
             selected && 'bg-indigo-600 text-white'
           )}>
-          {option}
+          {option.toUpperCase()}
         </div>
         <span
           className={cx(
@@ -63,12 +57,14 @@ function QuestionOption({ option, text, selected }: QuestionOptionProps) {
       </div>
       <input
         type="radio"
-        name="question_3"
+        name={name}
+        value={option}
         checked={selected}
         className={cx(
           'h-4 w-4 text-indigo-600 accent-indigo-600 focus:ring-indigo-600',
           !selected && 'border-slate-300'
         )}
+        onChange={evt => onSelect(evt.target.value)}
       />
     </label>
   )
@@ -80,36 +76,33 @@ interface QuestionOptionListProps {
 export function QuestionOptionList({ children }: QuestionOptionListProps) {
   return <div className="mt-8 space-y-4">{children}</div>
 }
-export function QuestionCard() {
+
+interface QuestionCardProps {
+  question: Question
+  selectedAnswer: string | null
+  onChangeAnswer: (answer: string) => void
+}
+
+export function QuestionCard({
+  question,
+  selectedAnswer,
+  onChangeAnswer
+}: QuestionCardProps) {
   return (
     <Card compact>
-      <QuestionText>
-        ¿Cuál es la función principal de la "función de activación" en una
-        neurona artificial dentro de una red neuronal?
-      </QuestionText>
-
-      <QuestionHint>
-        Piensa en cómo se decide si una señal biológica pasa o no a la siguiente
-        neurona.
-      </QuestionHint>
+      <QuestionText>{question.text}</QuestionText>
 
       <QuestionOptionList>
-        <QuestionOption
-          option="A"
-          text="Multiplicar los datos de entrada por un peso asignado de forma aleatoria."
-        />
-        <QuestionOption
-          option="B"
-          text="Introducir no linealidad en la red para que pueda aprender patrones complejos."
-        />
-        <QuestionOption
-          option="C"
-          text="Almacenar de forma permanente las respuestas correctas dadas por el usuario."
-        />
-        <QuestionOption
-          option="D"
-          text="Reducir la velocidad de procesamiento para evitar el sobrecalentamiento del sistema."
-        />
+        {question.options.map(option => (
+          <QuestionOption
+            key={option.id}
+            name="answer"
+            option={option.option}
+            text={option.text}
+            selected={selectedAnswer === option.option}
+            onSelect={onChangeAnswer}
+          />
+        ))}
       </QuestionOptionList>
     </Card>
   )

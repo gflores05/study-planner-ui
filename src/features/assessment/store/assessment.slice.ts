@@ -100,7 +100,7 @@ const assessmentSlice = createSlice({
         state.loading = false
         state.questions = state.questions.map(q =>
           q.id === payload.questionId
-            ? { ...q, selectedAnswer: payload.answer }
+            ? { ...q, selectedAnswer: payload.selectedAnswer }
             : q
         )
       })
@@ -111,5 +111,5 @@ const assessmentSlice = createSlice({
   }
 })
 
-export const {} = assessmentSlice.actions
+export const { nextQuestion, prevQuestion } = assessmentSlice.actions
 export default assessmentSlice.reducer

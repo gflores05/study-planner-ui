@@ -1,7 +1,8 @@
 import { Button } from '@/components'
+import { useAssessment } from '../../hooks/assessment.hooks'
 
 interface QuestionCompletedButtonProps {
-  children: string
+  children: React.ReactNode
 }
 
 export function QuestionCompletedButton({
@@ -15,7 +16,7 @@ export function QuestionCompletedButton({
 }
 
 interface CurrentQuestionButtonProps {
-  children: string
+  children: React.ReactNode
 }
 
 export function CurrentQuestionButton({
@@ -29,7 +30,7 @@ export function CurrentQuestionButton({
 }
 
 interface QuestionNavigationButtonProps {
-  children: string
+  children: React.ReactNode
 }
 
 export function QuestionNavigationButton({
@@ -43,19 +44,20 @@ export function QuestionNavigationButton({
 }
 
 export function AssessmentNavigation() {
+  const { questionIndex, questions } = useAssessment()
   return (
     <footer className="bg-white border-t border-slate-200 py-4 mt-auto">
       <div className="mx-auto max-w-4xl px-4 flex flex-wrap justify-center gap-2">
-        <QuestionCompletedButton>1</QuestionCompletedButton>
-        <QuestionCompletedButton>2</QuestionCompletedButton>
-        <CurrentQuestionButton>3</CurrentQuestionButton>
-        <QuestionNavigationButton>4</QuestionNavigationButton>
-        <QuestionNavigationButton>5</QuestionNavigationButton>
-        <QuestionNavigationButton>6</QuestionNavigationButton>
-        <QuestionNavigationButton>7</QuestionNavigationButton>
-        <QuestionNavigationButton>8</QuestionNavigationButton>
-        <QuestionNavigationButton>9</QuestionNavigationButton>
-        <QuestionNavigationButton>10</QuestionNavigationButton>
+        {questions.map((question, qi) => {
+          const qnumber = qi + 1
+          if (qi === questionIndex) {
+            return <CurrentQuestionButton>{qnumber}</CurrentQuestionButton>
+          }
+          if (question.selectedAnswer) {
+            return <QuestionCompletedButton>{qnumber}</QuestionCompletedButton>
+          }
+          return <QuestionNavigationButton>{qnumber}</QuestionNavigationButton>
+        })}
       </div>
     </footer>
   )

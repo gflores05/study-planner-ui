@@ -10,7 +10,9 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import type { Topic } from '@/features/topic/types'
 import { useMemo } from 'react'
-import { NavLink } from 'react-router'
+import { useNavigate } from 'react-router'
+import { useAssessment } from '@/features/assessment/hooks/assessment.hooks'
+import { AssessmentStatus } from '@/features/assessment'
 
 interface CompletedTopicCardProps {
   topic: Topic
@@ -65,6 +67,9 @@ export function InProgressTopicCard({
   order,
   studyPlanId
 }: InProgressTopicCardProps) {
+  const { start } = useAssessment()
+  const navigate = useNavigate()
+
   const subtopics = useMemo(() => {
     return topic.subTopics.map(st => st.title).join(', ')
   }, [topic])
@@ -72,6 +77,20 @@ export function InProgressTopicCard({
   const hours = useMemo(() => {
     return topic.subTopics.length * 2
   }, [topic])
+
+  async function startAssessment() {
+    if (!topic.assessment) {
+      return
+    }
+
+    if (topic.assessment.status === AssessmentStatus.PENDING) {
+      await start(topic.assessment?.id)
+    }
+
+    await navigate(
+      `/study-plan/${studyPlanId}/assessment/${topic.assessment?.id}`
+    )
+  }
 
   return (
     <Card selected>
@@ -95,12 +114,11 @@ export function InProgressTopicCard({
             </div>
           </div>
         </div>
-        <Button variant="primary" size="small">
-          <NavLink
-            to={`/study-plan/${studyPlanId}/assessment/${topic.assessment?.id}`}
-            end>
-            <FontAwesomeIcon icon={faPenToSquare} /> Take Exam
-          </NavLink>
+        <Button variant="primary" size="small" onClick={startAssessment}>
+          <FontAwesomeIcon icon={faPenToSquare} />{' '}
+          {topic.assessment?.status === AssessmentStatus.IN_PROGRESS
+            ? 'Continue Exam'
+            : 'Take Exam'}
         </Button>
       </div>
     </Card>

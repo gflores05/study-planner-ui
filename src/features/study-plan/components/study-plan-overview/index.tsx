@@ -19,9 +19,7 @@ export function StudyPlanOverview() {
   const { studyPlanId } = useParams()
 
   useEffect(() => {
-    console.log('study plan id ', studyPlanId)
     if (studyPlanId && !studyPlan) {
-      console.log('fetching study plan ', studyPlanId)
       fetchStudyPlan(studyPlanId)
     }
   }, [studyPlanId])

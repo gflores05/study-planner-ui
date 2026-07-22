@@ -51,7 +51,7 @@ export function AssessmentProgress({
   current
 }: AssessmentProgressProps) {
   const percentage = useMemo(
-    () => (completed / total) * 100,
+    () => Math.round((completed / total) * 100),
     [total, completed]
   )
 

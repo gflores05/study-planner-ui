@@ -7,8 +7,22 @@ import {
 } from '@/features/assessment'
 import { useParams } from 'react-router'
 import { useAssessment } from '../../hooks/assessment.hooks'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useTopic } from '@/features/topic/hooks/topic.hooks'
+import { Loader2Icon } from 'lucide-react'
+import { cn } from '@/lib/utils'
+
+function Spinner({ className, ...props }: React.ComponentProps<'svg'>) {
+  return (
+    <Loader2Icon
+      data-slot="spinner"
+      role="status"
+      aria-label="Loading"
+      className={cn('size-4 animate-spin', className)}
+      {...props}
+    />
+  )
+}
 
 interface AssessmentContainerProps {
   children: React.ReactNode
@@ -32,6 +46,8 @@ export function AssessmentResolution() {
   } = useAssessment()
   const { fetchTopic, topic } = useTopic()
 
+  const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
+
   useEffect(() => {
     if (assessmentId) {
       fetchAssessment(assessmentId)
@@ -44,6 +60,14 @@ export function AssessmentResolution() {
     }
   }, [assessment])
 
+  useEffect(() => {
+    if (question && question.selectedAnswer) {
+      setSelectedAnswer(question.selectedAnswer)
+      return
+    }
+    setSelectedAnswer(null)
+  }, [question])
+
   return (
     <>
       <AssessmentNavbar topic={topic} />
@@ -55,8 +79,16 @@ export function AssessmentResolution() {
             completed={completedQuestions.length}
           />
         )}
-        <QuestionCard />
-        <AssessmentActions />
+        {question ? (
+          <QuestionCard
+            question={question}
+            onChangeAnswer={setSelectedAnswer}
+            selectedAnswer={selectedAnswer}
+          />
+        ) : (
+          <Spinner />
+        )}
+        <AssessmentActions selectedAnswer={selectedAnswer} />
       </AssessmentContainer>
       <AssessmentNavigation />
     </>

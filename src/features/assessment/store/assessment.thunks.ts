@@ -46,21 +46,21 @@ export const completeAssessment = createAsyncThunk<
 })
 
 export const answerQuestion = createAsyncThunk<
-  { questionId: string; assessmentId: string; answer: string },
-  { questionId: string; assessmentId: string; answer: string },
+  { questionId: string; assessmentId: string; selectedAnswer: string },
+  { questionId: string; assessmentId: string; selectedAnswer: string },
   { rejectValue: string }
 >('assessment/answer', async (params, { rejectWithValue }) => {
   try {
     const response = await AssessmentService.answer(
       params.assessmentId,
       params.questionId,
-      params.answer
+      params.selectedAnswer
     )
 
     return {
       questionId: response.question_id,
       assessmentId: response.assessment_id,
-      answer: params.answer
+      selectedAnswer: params.selectedAnswer
     }
   } catch (error) {
     return rejectWithValue((error as Error).message)

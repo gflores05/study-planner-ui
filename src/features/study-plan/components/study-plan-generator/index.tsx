@@ -310,7 +310,6 @@ export function StudyPlanGenerator() {
     let eventSubscription: Subscription
     if (wsClient) {
       eventSubscription = wsClient.events$.subscribe(async event => {
-        console.log('receiving realtime event ', JSON.stringify(event))
         switch (event.event) {
           case 'ReportStudyPlanGeneratedCommand':
             await fetchStudyPlan()

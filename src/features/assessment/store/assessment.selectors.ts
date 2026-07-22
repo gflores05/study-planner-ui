@@ -18,14 +18,15 @@ export const selectAssessmentError = createSelector(
   assessmentState => assessmentState.error
 )
 
-export const selectCurrentQuestion = createSelector(
-  selectAssessmentState,
-  assessmentState => assessmentState.questions[assessmentState.currentQuestion]
-)
-
 export const selectCurrentQuestionIndex = createSelector(
   selectAssessmentState,
   assessmentState => assessmentState.currentQuestion
+)
+
+export const selectCurrentQuestion = createSelector(
+  selectAssessmentState,
+  selectCurrentQuestionIndex,
+  (assessmentState, currentIndex) => assessmentState.questions[currentIndex]
 )
 
 export const selectIsQuestionAnswered = createSelector(
@@ -36,4 +37,16 @@ export const selectIsQuestionAnswered = createSelector(
 export const selectCompletedQuestions = createSelector(
   selectAssessmentState,
   assessmentState => assessmentState.questions.filter(q => q.selectedAnswer)
+)
+
+export const selectQuestions = createSelector(
+  selectAssessmentState,
+  assessmentState => assessmentState.questions
+)
+
+export const selectIsLastQuestion = createSelector(
+  selectAssessmentState,
+  selectCurrentQuestionIndex,
+  (assessmentState, currentIndex) =>
+    assessmentState.questions.length - 1 === currentIndex
 )

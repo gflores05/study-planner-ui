@@ -30,6 +30,7 @@ export function Button({
       form={form}
       className={cx(
         'inline-flex items-center rounded-xl transition-colors',
+        !disabled && 'cursor-pointer',
         variant === 'default' &&
           !disabled &&
           'bg-white text-slate-600 shadow-sm hover:bg-slate-50 border border-slate-200',
@@ -43,7 +44,8 @@ export function Button({
         size === 'medium' && 'gap-2 px-4 py-2.5 text-sm font-semibold',
         size === 'small' && 'shrink-0 px-4 py-2 text-xs font-bold',
         size === 'icon' && 'p-2',
-        disabled && 'bg-slate-100 text-slate-400 cursor-not-allowed'
+        disabled &&
+          'bg-slate-100 text-slate-400 cursor-not-allowed hover:bg-slate-50'
       )}>
       {children}
     </button>

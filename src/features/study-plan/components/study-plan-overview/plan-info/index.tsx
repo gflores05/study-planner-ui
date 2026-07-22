@@ -36,7 +36,7 @@ export function PlanInfo({ studyPlan }: PlanInfoProps) {
         }
       />
       <ProgressBar value={progress} />
-      <TopicsList topics={studyPlan.topics} />
+      <TopicsList topics={studyPlan.topics} studyPlanId={studyPlan.id} />
     </div>
   )
 }
