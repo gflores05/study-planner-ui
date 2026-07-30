@@ -1,3 +1,3 @@
 export * from './study-plan-overview'
 export * from './study-plan-generator'
-export * from './navbar'
+export * from '../../../app/components/app-navbar'

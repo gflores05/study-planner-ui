@@ -1,11 +1,11 @@
-import { MainContainer, ErrorMessage } from '@/components'
-import { StudyPlanNavbar } from '@/features/study-plan'
+import { ErrorMessage } from '@/components'
 import { NewPlanBanner } from './new-plan-banner'
 import { PerformanceInfo } from './performance-info'
 import { useStudyPlan } from '../../hooks/study-plan.hooks'
 import { useParams } from 'react-router'
 import { useEffect } from 'react'
 import { Outlet } from 'react-router'
+import { AppLayout } from '@/app/components/layout'
 
 export function StudyPlanOverview() {
   const { studyPlan, fetchStudyPlan, error } = useStudyPlan()
@@ -18,16 +18,13 @@ export function StudyPlanOverview() {
   }, [studyPlanId])
 
   return (
-    <>
-      <StudyPlanNavbar />
-      <MainContainer>
-        <NewPlanBanner />
-        <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
-          <Outlet />
-          {studyPlan && <PerformanceInfo />}
-          {error && <ErrorMessage>{error}</ErrorMessage>}
-        </div>
-      </MainContainer>
-    </>
+    <AppLayout>
+      <NewPlanBanner />
+      <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
+        <Outlet />
+        {studyPlan && <PerformanceInfo />}
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+      </div>
+    </AppLayout>
   )
 }

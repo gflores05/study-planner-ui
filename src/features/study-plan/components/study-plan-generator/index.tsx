@@ -1,4 +1,4 @@
-import { Button, Content, ErrorMessage, MainContainer } from '@/components'
+import { Button, Content, ErrorMessage } from '@/components'
 import {
   FieldGroup,
   FieldSet,
@@ -18,7 +18,7 @@ import {
   SelectTrigger,
   SelectValue
 } from '@/components/ui/select'
-import { StudyPlanNavbar, StudyPlanStatus } from '@/features/study-plan'
+import { StudyPlanStatus } from '@/features/study-plan'
 import { type IconProp } from '@fortawesome/fontawesome-svg-core'
 import {
   faBookOpen,
@@ -41,6 +41,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { NavLink } from 'react-router'
 import type { Subscription } from 'rxjs'
+import { AppLayout } from '@/app/components/layout'
 
 type OptionData = { label: string; value: string | null }
 
@@ -303,8 +304,14 @@ export function StudyPlanGenerator() {
   const [studyPlanId, setStudyPlanId] = useState<string | null>(null)
 
   useEffect(() => {
+    if (studyPlan) {
+      connectWS(studyPlan.createdByUserId)
+    }
+  }, [studyPlan])
+
+  useEffect(() => {
     if (studyPlanId) {
-      fetchStudyPlan(studyPlanId).then(() => connectWS(studyPlanId))
+      fetchStudyPlan(studyPlanId)
     }
   }, [studyPlanId])
 
@@ -367,47 +374,42 @@ export function StudyPlanGenerator() {
   }
 
   return (
-    <>
-      <StudyPlanNavbar />
-      <MainContainer>
-        <Content
-          alignContent="center"
-          title="Generate New Plan"
-          subtitle="Time to train your brain!">
-          <div className="w-full flex flex-col items-center justify-center gap-4">
-            {loading && (
-              <StatusMessage>Requesting study plan....</StatusMessage>
-            )}
-            {!studyPlan && !loading && (
-              <StudyPlanGeneratorForm onSubmit={onSubmit} loading={loading} />
-            )}
-            {studyPlan && (
-              <>
-                {studyPlan.status === StudyPlanStatus.COMPLETED && (
-                  <Button variant="primary">
-                    <NavLink to={`/study-plan/${studyPlan.id}`} end>
-                      Go to your study plan
-                    </NavLink>
-                  </Button>
-                )}
-                {studyPlan.status === StudyPlanStatus.PENDING ||
-                  (studyPlan.status === StudyPlanStatus.GENERATING && (
-                    <StatusMessage>
-                      Your study plan is being genereted...
-                    </StatusMessage>
-                  ))}
-                {studyPlan.status === StudyPlanStatus.FAILED ||
-                  (studyPlan.status === StudyPlanStatus.UNKNOWN && (
-                    <ErrorMessage>
-                      Your study plan has failed to generate.
-                    </ErrorMessage>
-                  ))}
-              </>
-            )}
-            {error && <ErrorMessage>{error}</ErrorMessage>}
-          </div>
-        </Content>
-      </MainContainer>
-    </>
+    <AppLayout>
+      <Content
+        alignContent="center"
+        title="Generate New Plan"
+        subtitle="Time to train your brain!">
+        <div className="w-full flex flex-col items-center justify-center gap-4">
+          {loading && <StatusMessage>Requesting study plan....</StatusMessage>}
+          {!studyPlan && !loading && (
+            <StudyPlanGeneratorForm onSubmit={onSubmit} loading={loading} />
+          )}
+          {studyPlan && (
+            <>
+              {studyPlan.status === StudyPlanStatus.COMPLETED && (
+                <Button variant="primary">
+                  <NavLink to={`/study-plan/${studyPlan.id}`} end>
+                    Go to your study plan
+                  </NavLink>
+                </Button>
+              )}
+              {studyPlan.status === StudyPlanStatus.PENDING ||
+                (studyPlan.status === StudyPlanStatus.GENERATING && (
+                  <StatusMessage>
+                    Your study plan is being genereted...
+                  </StatusMessage>
+                ))}
+              {studyPlan.status === StudyPlanStatus.FAILED ||
+                (studyPlan.status === StudyPlanStatus.UNKNOWN && (
+                  <ErrorMessage>
+                    Your study plan has failed to generate.
+                  </ErrorMessage>
+                ))}
+            </>
+          )}
+          {error && <ErrorMessage>{error}</ErrorMessage>}
+        </div>
+      </Content>
+    </AppLayout>
   )
 }

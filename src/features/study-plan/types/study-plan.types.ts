@@ -19,4 +19,5 @@ export type StudyPlan = {
   topics: Topic[]
   status: StudyPlanStatus
   createdOn: string
+  createdByUserId: string
 }

@@ -29,4 +29,5 @@ export type StudyPlanDTO = {
   topics: TopicDTO[]
   status: StudyPlanDTOStatus
   created_on: string
+  created_by_user_id: string
 }

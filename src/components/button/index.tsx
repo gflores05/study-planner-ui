@@ -1,11 +1,11 @@
 import type { MouseEventHandler } from 'react'
 import cx from 'classnames'
 
-interface ButtonProps {
+export interface ButtonProps {
   children: React.ReactNode
   onClick?: MouseEventHandler<HTMLButtonElement>
   variant?: 'default' | 'primary' | 'inverted' | 'success'
-  size?: 'normal' | 'medium' | 'small' | 'icon'
+  size?: 'normal' | 'medium' | 'small' | 'icon' | 'large'
   title?: string
   disabled?: boolean
   type?: 'submit' | 'reset' | 'button'
@@ -42,6 +42,7 @@ export function Button({
           'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/10',
         size === 'normal' && 'gap-2 px-6 py-3 text-sm font-semibold ',
         size === 'medium' && 'gap-2 px-4 py-2.5 text-sm font-semibold',
+        size === 'large' && 'gap-2 px-6 py-4 text-md font-semibold',
         size === 'small' && 'shrink-0 px-4 py-2 text-xs font-bold',
         size === 'icon' && 'p-2',
         disabled &&

@@ -11,6 +11,7 @@ import { useEffect, useState } from 'react'
 import { useTopic } from '@/features/topic/hooks/topic.hooks'
 import { Loader2Icon } from 'lucide-react'
 import { cn } from '@/lib/utils'
+import { useAuth } from '@/features/auth/hooks'
 
 function Spinner({ className, ...props }: React.ComponentProps<'svg'>) {
   return (
@@ -47,6 +48,11 @@ export function AssessmentResolution() {
   const { fetchTopic, topic } = useTopic()
 
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
+  const { saveToken } = useAuth()
+
+  useEffect(() => {
+    saveToken()
+  }, [saveToken])
 
   useEffect(() => {
     if (assessmentId) {
