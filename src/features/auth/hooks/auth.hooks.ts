@@ -4,9 +4,10 @@ import {
   setToken,
   selectUserError,
   selectUserLoading,
-  selectCurrentUser
+  selectCurrentUser,
+  selectToken
 } from '../store'
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
 
 export function useAuth() {
@@ -14,7 +15,10 @@ export function useAuth() {
   const user = useAppSelector(selectCurrentUser)
   const loading = useAppSelector(selectUserLoading)
   const error = useAppSelector(selectUserError)
+  const token = useAppSelector(selectToken)
   const { getAccessTokenSilently } = useAuth0()
+
+  const isTokenReady = useMemo(() => Boolean(token), [token])
 
   const saveToken = useCallback(async () => {
     const accessToken = await getAccessTokenSilently()
@@ -26,5 +30,5 @@ export function useAuth() {
     dispatch(getUser({}))
   }, [getUser])
 
-  return { user, loading, error, fetchUser, saveToken }
+  return { user, loading, error, fetchUser, saveToken, isTokenReady }
 }

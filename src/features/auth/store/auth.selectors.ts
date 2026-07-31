@@ -1,19 +1,24 @@
 import { createSelector } from '@reduxjs/toolkit'
 import { type RootState } from '@/app/store'
 
-export const selectUserState = (state: RootState) => state.auth
+export const selectAuthState = (state: RootState) => state.auth
 
 export const selectCurrentUser = createSelector(
-  selectUserState,
-  userState => userState.current
+  selectAuthState,
+  authState => authState.current
 )
 
 export const selectUserLoading = createSelector(
-  selectUserState,
-  userState => userState.loading
+  selectAuthState,
+  authState => authState.loading
 )
 
 export const selectUserError = createSelector(
-  selectUserState,
-  userState => userState.error
+  selectAuthState,
+  authState => authState.error
+)
+
+export const selectToken = createSelector(
+  selectAuthState,
+  authState => authState.token
 )

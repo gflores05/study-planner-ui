@@ -5,13 +5,13 @@ import {
   AssessmentProgress,
   QuestionCard
 } from '@/features/assessment'
-import { useParams } from 'react-router'
+import { Outlet, useParams } from 'react-router'
 import { useAssessment } from '../../hooks/assessment.hooks'
 import { useEffect, useState } from 'react'
-import { useTopic } from '@/features/topic/hooks/topic.hooks'
 import { Loader2Icon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/features/auth/hooks'
+import { useAuth0 } from '@auth0/auth0-react'
 
 function Spinner({ className, ...props }: React.ComponentProps<'svg'>) {
   return (
@@ -39,32 +39,19 @@ export function AssessmentContainer({ children }: AssessmentContainerProps) {
 export function AssessmentResolution() {
   const { assessmentId } = useParams()
   const {
-    fetchAssessment,
     assessment,
     question,
     questionIndex,
-    completedQuestions
+    completedQuestions,
+    fetchAssessment
   } = useAssessment()
-  const { fetchTopic, topic } = useTopic()
-
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null)
-  const { saveToken } = useAuth()
-
-  useEffect(() => {
-    saveToken()
-  }, [saveToken])
 
   useEffect(() => {
     if (assessmentId) {
       fetchAssessment(assessmentId)
     }
   }, [assessmentId])
-
-  useEffect(() => {
-    if (assessment) {
-      fetchTopic(assessment.topicId, false)
-    }
-  }, [assessment])
 
   useEffect(() => {
     if (question && question.selectedAnswer) {
@@ -76,25 +63,48 @@ export function AssessmentResolution() {
 
   return (
     <>
-      <AssessmentNavbar topic={topic} />
+      {assessment && question && (
+        <AssessmentProgress
+          current={questionIndex + 1}
+          total={assessment.questions.length}
+          completed={completedQuestions.length}
+        />
+      )}
+      {question ? (
+        <QuestionCard
+          question={question}
+          onChangeAnswer={setSelectedAnswer}
+          selectedAnswer={selectedAnswer}
+        />
+      ) : (
+        <Spinner />
+      )}
+      <AssessmentActions selectedAnswer={selectedAnswer} />
+    </>
+  )
+}
+
+export function AssessmentLayout() {
+  const { saveToken, isTokenReady } = useAuth()
+  const { isLoading } = useAuth0()
+
+  if (isLoading || !isTokenReady) {
+    return (
       <AssessmentContainer>
-        {assessment && question && (
-          <AssessmentProgress
-            current={questionIndex + 1}
-            total={assessment.questions.length}
-            completed={completedQuestions.length}
-          />
-        )}
-        {question ? (
-          <QuestionCard
-            question={question}
-            onChangeAnswer={setSelectedAnswer}
-            selectedAnswer={selectedAnswer}
-          />
-        ) : (
-          <Spinner />
-        )}
-        <AssessmentActions selectedAnswer={selectedAnswer} />
+        <h1>Loading authentication session...</h1>
+      </AssessmentContainer>
+    )
+  }
+
+  useEffect(() => {
+    saveToken()
+  }, [saveToken])
+
+  return (
+    <>
+      <AssessmentNavbar />
+      <AssessmentContainer>
+        <Outlet />
       </AssessmentContainer>
       <AssessmentNavigation />
     </>

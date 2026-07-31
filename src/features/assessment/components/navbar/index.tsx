@@ -2,9 +2,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faClock } from '@fortawesome/free-regular-svg-icons'
 import { Button, Navbar } from '@/components'
-import type { Topic } from '@/features/topic'
 import { Spinner } from '@/components/ui/spinner'
 import { NavLink } from 'react-router'
+import { useTopic } from '@/features/topic/hooks/topic.hooks'
+import { useAssessment } from '../../hooks/assessment.hooks'
+import { useEffect } from 'react'
 
 export function AssessmentExam() {
   return (
@@ -63,11 +65,16 @@ export function AssessmentCloseButton({
   )
 }
 
-interface AssessmentNavbarProps {
-  topic: Topic | null
-}
+export function AssessmentNavbar() {
+  const { assessment } = useAssessment()
+  const { topic, fetchTopic } = useTopic()
 
-export function AssessmentNavbar({ topic }: AssessmentNavbarProps) {
+  useEffect(() => {
+    if (assessment) {
+      fetchTopic(assessment.topicId, false)
+    }
+  }, [assessment])
+
   return (
     <Navbar>
       <div className="mx-auto flex max-w-4xl items-center justify-between">

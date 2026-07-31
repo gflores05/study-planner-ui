@@ -31,7 +31,9 @@ export function Auth0ProviderWithNavigate({
         audience: audience,
         redirect_uri: redirectUri
       }}
-      onRedirectCallback={onRedirectCallback}>
+      onRedirectCallback={onRedirectCallback}
+      useRefreshTokens
+      cacheLocation="localstorage">
       {children}
     </Auth0Provider>
   )

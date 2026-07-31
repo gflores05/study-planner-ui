@@ -3,24 +3,31 @@ import { AppNavbar } from '../app-navbar'
 import { useAuth } from '@/features/auth/hooks'
 import { useEffect } from 'react'
 import { useAuth0 } from '@auth0/auth0-react'
+import { Outlet } from 'react-router'
 
-interface AppLayoutProps {
-  children: React.ReactNode
-}
-
-export function AppLayout({ children }: AppLayoutProps) {
-  const { saveToken } = useAuth()
-  const { isAuthenticated } = useAuth0()
+export function AppLayout() {
+  const { saveToken, isTokenReady } = useAuth()
+  const { isAuthenticated, isLoading } = useAuth0()
 
   useEffect(() => {
     if (isAuthenticated) {
       saveToken()
     }
   }, [saveToken])
+
+  if (isLoading || !isTokenReady) {
+    return (
+      <MainContainer>
+        <h1>Loading authentication session...</h1>
+      </MainContainer>
+    )
+  }
   return (
     <>
       <AppNavbar />
-      <MainContainer>{children}</MainContainer>
+      <MainContainer>
+        <Outlet />
+      </MainContainer>
     </>
   )
 }

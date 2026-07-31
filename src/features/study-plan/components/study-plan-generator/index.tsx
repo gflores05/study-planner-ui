@@ -41,7 +41,6 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { NavLink } from 'react-router'
 import type { Subscription } from 'rxjs'
-import { AppLayout } from '@/app/components/layout'
 
 type OptionData = { label: string; value: string | null }
 
@@ -374,42 +373,40 @@ export function StudyPlanGenerator() {
   }
 
   return (
-    <AppLayout>
-      <Content
-        alignContent="center"
-        title="Generate New Plan"
-        subtitle="Time to train your brain!">
-        <div className="w-full flex flex-col items-center justify-center gap-4">
-          {loading && <StatusMessage>Requesting study plan....</StatusMessage>}
-          {!studyPlan && !loading && (
-            <StudyPlanGeneratorForm onSubmit={onSubmit} loading={loading} />
-          )}
-          {studyPlan && (
-            <>
-              {studyPlan.status === StudyPlanStatus.COMPLETED && (
-                <Button variant="primary">
-                  <NavLink to={`/study-plan/${studyPlan.id}`} end>
-                    Go to your study plan
-                  </NavLink>
-                </Button>
-              )}
-              {studyPlan.status === StudyPlanStatus.PENDING ||
-                (studyPlan.status === StudyPlanStatus.GENERATING && (
-                  <StatusMessage>
-                    Your study plan is being genereted...
-                  </StatusMessage>
-                ))}
-              {studyPlan.status === StudyPlanStatus.FAILED ||
-                (studyPlan.status === StudyPlanStatus.UNKNOWN && (
-                  <ErrorMessage>
-                    Your study plan has failed to generate.
-                  </ErrorMessage>
-                ))}
-            </>
-          )}
-          {error && <ErrorMessage>{error}</ErrorMessage>}
-        </div>
-      </Content>
-    </AppLayout>
+    <Content
+      alignContent="center"
+      title="Generate New Plan"
+      subtitle="Time to train your brain!">
+      <div className="w-full flex flex-col items-center justify-center gap-4">
+        {loading && <StatusMessage>Requesting study plan....</StatusMessage>}
+        {!studyPlan && !loading && (
+          <StudyPlanGeneratorForm onSubmit={onSubmit} loading={loading} />
+        )}
+        {studyPlan && (
+          <>
+            {studyPlan.status === StudyPlanStatus.COMPLETED && (
+              <Button variant="primary">
+                <NavLink to={`/study-plan/${studyPlan.id}`} end>
+                  Go to your study plan
+                </NavLink>
+              </Button>
+            )}
+            {studyPlan.status === StudyPlanStatus.PENDING ||
+              (studyPlan.status === StudyPlanStatus.GENERATING && (
+                <StatusMessage>
+                  Your study plan is being genereted...
+                </StatusMessage>
+              ))}
+            {studyPlan.status === StudyPlanStatus.FAILED ||
+              (studyPlan.status === StudyPlanStatus.UNKNOWN && (
+                <ErrorMessage>
+                  Your study plan has failed to generate.
+                </ErrorMessage>
+              ))}
+          </>
+        )}
+        {error && <ErrorMessage>{error}</ErrorMessage>}
+      </div>
+    </Content>
   )
 }
