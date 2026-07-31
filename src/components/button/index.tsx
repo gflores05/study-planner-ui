@@ -4,7 +4,7 @@ import cx from 'classnames'
 export interface ButtonProps {
   children: React.ReactNode
   onClick?: MouseEventHandler<HTMLButtonElement>
-  variant?: 'default' | 'primary' | 'inverted' | 'success'
+  variant?: 'default' | 'primary' | 'inverted' | 'success' | 'flat'
   size?: 'normal' | 'medium' | 'small' | 'icon' | 'large'
   title?: string
   disabled?: boolean
@@ -38,6 +38,8 @@ export function Button({
           'bg-indigo-600 text-white shadow-md shadow-indigo-100 hover:bg-indigo-700',
         variant === 'inverted' &&
           'bg-white text-indigo-600 shadow-sm hover:bg-indigo-50',
+        variant === 'flat' &&
+          'bg-white text-indigo-600 shadow-none border-none hover:bg-indigo-50',
         variant === 'success' &&
           'bg-emerald-50 text-emerald-700 ring-1 ring-inset ring-emerald-600/10',
         size === 'normal' && 'gap-2 px-6 py-3 text-sm font-semibold ',

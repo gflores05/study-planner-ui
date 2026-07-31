@@ -31,7 +31,7 @@ function StudyPlanLevel({ level }: StudyPlanLevelProps) {
     <div className="flex items-center gap-4">
       <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-555 bg-indigo-50 px-3 py-1 text-sm font-medium text-indigo-700 ring-1 ring-inset ring-indigo-700/10">
         <span className="h-1.5 w-1.5 rounded-full bg-indigo-500"></span>
-        Nivel: {level}
+        Level: {level}
       </span>
 
       <div className="flex items-center gap-2 border-l border-slate-200 pl-4">
@@ -84,8 +84,8 @@ export function LogoutButton() {
   }
 
   return (
-    <Button variant="inverted" onClick={handleLogout}>
-      <FontAwesomeIcon icon={faRightFromBracket} />
+    <Button variant="flat" size="icon" onClick={handleLogout}>
+      <FontAwesomeIcon className="text-2xl" icon={faRightFromBracket} />
     </Button>
   )
 }
