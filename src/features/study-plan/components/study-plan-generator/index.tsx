@@ -41,6 +41,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { NavLink } from 'react-router'
 import type { Subscription } from 'rxjs'
+import { useAuth } from '@/features/auth/hooks/auth.hooks'
 
 type OptionData = { label: string; value: string | null }
 
@@ -300,13 +301,15 @@ export function StudyPlanGenerator() {
     connectWS
   } = useStudyPlan()
 
+  const { user } = useAuth()
+
   const [studyPlanId, setStudyPlanId] = useState<string | null>(null)
 
   useEffect(() => {
-    if (studyPlan) {
-      connectWS(studyPlan.createdByUserId)
+    if (user) {
+      connectWS(user.id)
     }
-  }, [studyPlan])
+  }, [user])
 
   useEffect(() => {
     if (studyPlanId) {
@@ -323,9 +326,28 @@ export function StudyPlanGenerator() {
       let eventSubscription: Subscription
 
       eventSubscription = wsClient.events$.subscribe(async event => {
+        console.log('Received event:', event)
         switch (event.event) {
           case 'ReportStudyPlanGeneratedCommand':
             await fetchStudyPlan(studyPlan.id)
+            break
+          case 'ReportStudyPlanErrorCommand':
+            await fetchStudyPlan(studyPlan.id)
+            toast.error('Error', {
+              description: (
+                <p className="text-slate-800">
+                  There was an error generating your study plan. Please try
+                  again.
+                </p>
+              ),
+              position: 'bottom-right',
+              classNames: {
+                content: 'text-red-700',
+                icon: 'text-red-700'
+              }
+            })
+            break
+          default:
             break
         }
       })

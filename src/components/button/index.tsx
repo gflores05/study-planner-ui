@@ -20,7 +20,8 @@ export function Button({
   size = 'normal',
   disabled,
   type,
-  form
+  form,
+  ...rest
 }: ButtonProps) {
   return (
     <button
@@ -49,7 +50,8 @@ export function Button({
         size === 'icon' && 'p-2',
         disabled &&
           'bg-slate-100 text-slate-400 cursor-not-allowed hover:bg-slate-50'
-      )}>
+      )}
+      {...rest}>
       {children}
     </button>
   )

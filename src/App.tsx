@@ -1,12 +1,12 @@
 import './App.css'
 import { AppRouter } from './app/router'
 import { Toaster } from './components/ui/sonner'
-import { useAuth0 } from '@auth0/auth0-react'
 import { Spinner } from './components/ui/spinner'
 import { MainContainer } from './components'
+import { useAuth } from './features/auth/hooks'
 
 function App() {
-  const { isLoading } = useAuth0()
+  const { isLoading } = useAuth()
 
   if (isLoading) {
     return (

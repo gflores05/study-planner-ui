@@ -7,15 +7,11 @@ import { Button, Navbar, type ButtonProps } from '@/components'
 import { useEffect, useMemo } from 'react'
 import { Spinner } from '@/components/ui/spinner'
 import { useStudyPlan } from '../../../features/study-plan/hooks/study-plan.hooks'
-import { useAuth0 } from '@auth0/auth0-react'
 import { useAuth } from '@/features/auth/hooks'
 
-interface StudyPlanLevelProps {
-  level: string
-}
-
-function StudyPlanLevel({ level }: StudyPlanLevelProps) {
-  const { user, loading, fetchUser } = useAuth()
+function StudyPlanLevel() {
+  const { studyPlan, loading } = useStudyPlan()
+  const { user, isUserLoading, fetchUser } = useAuth()
 
   useEffect(() => {
     fetchUser()
@@ -23,16 +19,19 @@ function StudyPlanLevel({ level }: StudyPlanLevelProps) {
 
   const levelInitial = useMemo(() => user?.name[0].toUpperCase(), [user])
 
-  if (loading) {
+  if (isUserLoading) {
     return <Spinner />
   }
 
   return (
     <div className="flex items-center gap-4">
-      <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-555 bg-indigo-50 px-3 py-1 text-sm font-medium text-indigo-700 ring-1 ring-inset ring-indigo-700/10">
-        <span className="h-1.5 w-1.5 rounded-full bg-indigo-500"></span>
-        Level: {level}
-      </span>
+      {studyPlan && studyPlan.level && (
+        <span className="inline-flex items-center gap-1.5 rounded-full bg-indigo-555 bg-indigo-50 px-3 py-1 text-sm font-medium text-indigo-700 ring-1 ring-inset ring-indigo-700/10">
+          <span className="h-1.5 w-1.5 rounded-full bg-indigo-500"></span>
+          Level: {studyPlan.level}
+        </span>
+      )}
+      {loading && <Spinner />}
 
       <div className="flex items-center gap-2 border-l border-slate-200 pl-4">
         <div className="h-9 w-9 rounded-full overflow-hidden bg-slate-200 flex items-center justify-center font-semibold text-slate-600 ring-2 ring-slate-100">
@@ -61,30 +60,19 @@ function Brand() {
 }
 
 export function StudyPlanNav() {
-  const { studyPlan, loading } = useStudyPlan()
-
   return (
     <div className="flex gap-4">
-      {!loading && studyPlan && <StudyPlanLevel level={studyPlan.level} />}
-      {loading && <Spinner />}
+      <StudyPlanLevel />
       <LogoutButton />
     </div>
   )
 }
 
 export function LogoutButton() {
-  const { logout } = useAuth0()
-
-  const handleLogout = () => {
-    logout({
-      logoutParams: {
-        returnTo: window.location.origin
-      }
-    })
-  }
+  const { handleLogout } = useAuth()
 
   return (
-    <Button variant="flat" size="icon" onClick={handleLogout}>
+    <Button variant="flat" size="icon" title="Log out" onClick={handleLogout}>
       <FontAwesomeIcon className="text-2xl" icon={faRightFromBracket} />
     </Button>
   )
@@ -93,18 +81,7 @@ export function LogoutButton() {
 interface LoginButton extends Omit<ButtonProps, 'children' | 'onClick'> {}
 
 export function LoginButton(props: LoginButton) {
-  const { loginWithRedirect } = useAuth0()
-
-  const handleLogin = async () => {
-    await loginWithRedirect({
-      appState: {
-        returnTo: '/'
-      },
-      authorizationParams: {
-        prompt: 'login'
-      }
-    })
-  }
+  const { handleLogin } = useAuth()
 
   return (
     <Button {...props} onClick={handleLogin}>
@@ -114,19 +91,7 @@ export function LoginButton(props: LoginButton) {
 }
 
 export function SingupButton() {
-  const { loginWithRedirect } = useAuth0()
-
-  const handleSignUp = async () => {
-    await loginWithRedirect({
-      appState: {
-        returnTo: '/'
-      },
-      authorizationParams: {
-        prompt: 'login',
-        screen_hint: 'signup'
-      }
-    })
-  }
+  const { handleSignUp } = useAuth()
 
   return (
     <Button onClick={handleSignUp} variant="primary">
@@ -145,7 +110,7 @@ export function AuthNav() {
 }
 
 export function AppNavbar() {
-  const { isAuthenticated } = useAuth0()
+  const { isAuthenticated } = useAuth()
 
   return (
     <Navbar compact>

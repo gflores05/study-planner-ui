@@ -1,4 +1,6 @@
-export type RealTimeEventName = 'ReportStudyPlanGeneratedCommand'
+export type RealTimeEventName =
+  | 'ReportStudyPlanGeneratedCommand'
+  | 'ReportStudyPlanErrorCommand'
 
 export interface RealtimeEventPayload {
   event_name: RealTimeEventName

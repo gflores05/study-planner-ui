@@ -11,7 +11,6 @@ import { useEffect, useState } from 'react'
 import { Loader2Icon } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import { useAuth } from '@/features/auth/hooks'
-import { useAuth0 } from '@auth0/auth0-react'
 
 function Spinner({ className, ...props }: React.ComponentProps<'svg'>) {
   return (
@@ -85,10 +84,9 @@ export function AssessmentResolution() {
 }
 
 export function AssessmentLayout() {
-  const { saveToken, isTokenReady } = useAuth()
-  const { isLoading } = useAuth0()
+  const { saveToken, isTokenReady, isLoading, isAuthenticated } = useAuth()
 
-  if (isLoading || !isTokenReady) {
+  if (isAuthenticated && (isLoading || !isTokenReady)) {
     return (
       <AssessmentContainer>
         <h1>Loading authentication session...</h1>
