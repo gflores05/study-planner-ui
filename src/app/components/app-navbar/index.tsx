@@ -36,7 +36,11 @@ function StudyPlanLevel() {
       <div className="flex items-center gap-2 border-l border-slate-200 pl-4">
         <div className="h-9 w-9 rounded-full overflow-hidden bg-slate-200 flex items-center justify-center font-semibold text-slate-600 ring-2 ring-slate-100">
           {user?.picture ? (
-            <img alt={user.name} src={user.picture} />
+            <img
+              alt={levelInitial}
+              src={user.picture}
+              referrerPolicy="no-referrer"
+            />
           ) : (
             levelInitial
           )}
