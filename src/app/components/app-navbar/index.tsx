@@ -57,7 +57,7 @@ function Brand() {
         <FontAwesomeIcon className="text-xl" icon={faUserGraduate} />
       </div>
       <span className="text-xl font-bold tracking-tight text-slate-900">
-        Edu<span className="text-indigo-600">Plan</span>
+        Human<span className="text-indigo-600">Learning</span>
       </span>
     </div>
   )
