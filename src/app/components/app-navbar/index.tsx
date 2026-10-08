@@ -8,6 +8,7 @@ import { useEffect, useMemo } from 'react'
 import { Spinner } from '@/components/ui/spinner'
 import { useStudyPlan } from '../../../features/study-plan/hooks/study-plan.hooks'
 import { useAuth } from '@/features/auth/hooks'
+import { Link } from 'react-router'
 
 function StudyPlanLevel() {
   const { studyPlan, loading } = useStudyPlan()
@@ -54,10 +55,14 @@ function Brand() {
   return (
     <div className="flex items-center gap-2">
       <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-600 text-white shadow-md shadow-indigo-200">
-        <FontAwesomeIcon className="text-xl" icon={faUserGraduate} />
+        <Link to="/">
+          <FontAwesomeIcon className="text-xl" icon={faUserGraduate} />
+        </Link>
       </div>
       <span className="text-xl font-bold tracking-tight text-slate-900">
-        Human<span className="text-indigo-600">Learning</span>
+        <Link to="/">
+          Human<span className="text-indigo-600">Learning</span>
+        </Link>
       </span>
     </div>
   )

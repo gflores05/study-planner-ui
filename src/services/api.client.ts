@@ -1,4 +1,3 @@
-import { store } from '@/app/store'
 import axios from 'axios'
 
 export const apiClient = axios.create({
@@ -13,12 +12,3 @@ apiClient.interceptors.response.use(
     return Promise.reject(error)
   }
 )
-
-// Attach token from Redux store on every request
-apiClient.interceptors.request.use(config => {
-  const token = store.getState().auth.token
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`
-  }
-  return config
-})

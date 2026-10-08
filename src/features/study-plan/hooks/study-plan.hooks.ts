@@ -2,6 +2,7 @@ import { useAppDispatch, useAppSelector } from '@/app/hooks'
 import {
   getStudyPlan,
   requestStudyPlan,
+  reset,
   selectCurrentStudyPlan,
   selectStudyPlanError,
   selectStudyPlanLoading
@@ -34,6 +35,8 @@ export function useStudyPlan() {
     [getStudyPlan]
   )
 
+  const resetStudyPlan = useCallback(() => dispatch(reset()), [reset])
+
   return {
     studyPlan,
     loading,
@@ -41,6 +44,7 @@ export function useStudyPlan() {
     wsClient,
     fetchStudyPlan,
     generateStudyPlan,
+    resetStudyPlan,
     connectWS
   }
 }

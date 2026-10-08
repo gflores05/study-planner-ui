@@ -1,4 +1,4 @@
-import { AssessmentMapper } from '@/features/assessment'
+import { AssessmentMapper } from '@/features/assessment/mappers'
 import { SubTopicMapper } from './sub-topic.mapper'
 import type { TopicDTO } from '../dtos'
 import type { Topic } from '../types/topic.types'

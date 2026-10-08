@@ -17,7 +17,13 @@ const initialState: StudyPlanState = {
 const studyPlanSlice = createSlice({
   name: 'studyPlan',
   initialState,
-  reducers: {},
+  reducers: {
+    reset: state => {
+      state.current = null
+      state.loading = false
+      state.error = null
+    }
+  },
   extraReducers: builder => {
     // Handle the requestStudyPlan thunk actions
     builder
@@ -50,5 +56,5 @@ const studyPlanSlice = createSlice({
   }
 })
 
-export const {} = studyPlanSlice.actions
+export const { reset } = studyPlanSlice.actions
 export default studyPlanSlice.reducer
