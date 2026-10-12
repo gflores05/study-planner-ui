@@ -1,4 +1,5 @@
-import { Card } from '@/components'
+import { Badge } from '@/components/ui/badge'
+import { Card } from '@/components/ui/card'
 import type { SubTopic } from '@/features/topic/types'
 import { faBook, faBookOpen, faClock } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -41,18 +42,18 @@ export function SubTopicCard({ subTopic, order }: SubTopicCardProps) {
             <FontAwesomeIcon icon={faBookOpen} className="text-lg" />
           </div>
           <div>
-            <span className="inline-block rounded-md bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-700 mb-1">
+            <Badge variant="info" className="mb-1 rounded-md">
               Studying now
-            </span>
+            </Badge>
             <h3 className="font-semibold text-slate-900">
               Sub Topic {order}: {subTopic.title}
             </h3>
             {/* <p className="mt-1 text-sm text-slate-600">{subtopics}</p> */}
             <StudyMaterialList studyMaterial={subTopic.studyMaterial} />
             <div className="mt-3 flex gap-2">
-              <span className="inline-flex items-center gap-1 rounded-md bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600">
+              <Badge variant="muted" className="h-auto rounded-md px-2 py-1">
                 <FontAwesomeIcon icon={faClock} /> {hours} days
-              </span>
+              </Badge>
             </div>
           </div>
         </div>

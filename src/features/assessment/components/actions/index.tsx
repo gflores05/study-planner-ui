@@ -1,6 +1,6 @@
 import { faArrowLeft, faArrowRight } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Button } from '@/components'
+import { Button } from '@/components/ui/button'
 import { AssessmentStatus } from '../../types'
 import { useAssessment } from '../../hooks/assessment.hooks'
 import { useMemo } from 'react'
@@ -58,10 +58,14 @@ export function AssessmentActions({ selectedAnswer }: AssessmentActionsProps) {
 
   return (
     <div className="mt-6 flex items-center justify-between">
-      <Button disabled={!canMove} onClick={previousQuestion}>
+      <Button
+        variant="outline"
+        size="lg"
+        disabled={!canMove}
+        onClick={previousQuestion}>
         <FontAwesomeIcon icon={faArrowLeft} /> Previous
       </Button>
-      <Button disabled={!canMove} variant="primary" onClick={nextQuestion}>
+      <Button size="lg" disabled={!canMove} onClick={nextQuestion}>
         {isLastQuestion ? 'Complete' : 'Next'}{' '}
         <FontAwesomeIcon icon={faArrowRight} />
       </Button>

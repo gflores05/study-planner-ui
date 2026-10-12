@@ -1,4 +1,4 @@
-import { ProgressBar } from '@/components'
+import { Progress } from '@/components/ui/progress'
 import { useMemo } from 'react'
 
 interface AssessmentQuestionNumberProps {
@@ -62,7 +62,7 @@ export function AssessmentProgress({
         total={total}
         percentage={percentage}
       />
-      <ProgressBar value={percentage} />
+      <Progress value={percentage} />
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import cx from 'classnames'
-import { Card } from '@/components/card'
+import { Card } from '@/components/ui/card'
 import type { Question } from '../../types'
 
 interface QuestionTextProps {
@@ -89,7 +89,7 @@ export function QuestionCard({
   onChangeAnswer
 }: QuestionCardProps) {
   return (
-    <Card compact>
+    <Card className="sm:p-8">
       <QuestionText>{question.text}</QuestionText>
 
       <QuestionOptionList>

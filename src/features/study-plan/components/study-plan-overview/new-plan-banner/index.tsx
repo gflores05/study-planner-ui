@@ -1,5 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Button, Content } from '@/components'
+import { Content } from '@/components'
+import { Button } from '@/components/ui/button'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { useNavigate } from 'react-router'
 import { useStudyPlan } from '@/features/study-plan/hooks/study-plan.hooks'
@@ -23,7 +24,7 @@ export function NewPlanBanner() {
         and test your knowledge with the generated quizzes.
       </p>
       <div className="mt-6 flex flex-wrap gap-4">
-        <Button variant="inverted" size="medium" onClick={() => goToNewPlan()}>
+        <Button variant="secondary" onClick={() => goToNewPlan()}>
           <FontAwesomeIcon icon={faPlus} /> New Study Plan
         </Button>
       </div>

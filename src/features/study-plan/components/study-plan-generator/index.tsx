@@ -1,4 +1,6 @@
-import { Button, Content, ErrorMessage } from '@/components'
+import { Content } from '@/components'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Button } from '@/components/ui/button'
 import {
   FieldGroup,
   FieldSet,
@@ -270,7 +272,7 @@ export function StudyPlanGeneratorForm({
           </FieldSet>
           <div className="flex justify-end">
             <Button
-              variant="primary"
+              size="lg"
               type="submit"
               form="study-plan-form"
               disabled={loading}>
@@ -406,10 +408,11 @@ export function StudyPlanGenerator() {
         {studyPlan && (
           <>
             {studyPlan.status === StudyPlanStatus.COMPLETED && (
-              <Button variant="primary">
-                <NavLink to={`/study-plan/${studyPlan.id}`} end>
-                  Go to your study plan
-                </NavLink>
+              <Button
+                size="lg"
+                nativeButton={false}
+                render={<NavLink to={`/study-plan/${studyPlan.id}`} end />}>
+                Go to your study plan
               </Button>
             )}
             {studyPlan.status === StudyPlanStatus.PENDING ||
@@ -420,13 +423,19 @@ export function StudyPlanGenerator() {
               ))}
             {studyPlan.status === StudyPlanStatus.FAILED ||
               (studyPlan.status === StudyPlanStatus.UNKNOWN && (
-                <ErrorMessage>
-                  Your study plan has failed to generate.
-                </ErrorMessage>
+                <Alert variant="destructive" className="mt-4">
+                  <AlertDescription>
+                    Your study plan has failed to generate.
+                  </AlertDescription>
+                </Alert>
               ))}
           </>
         )}
-        {error && <ErrorMessage>{error}</ErrorMessage>}
+        {error && (
+          <Alert variant="destructive" className="mt-4">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
       </div>
     </Content>
   )

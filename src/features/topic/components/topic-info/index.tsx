@@ -1,4 +1,5 @@
-import { Button, Title } from '@/components'
+import { Title } from '@/components'
+import { Button } from '@/components/ui/button'
 import { Link, useParams } from 'react-router'
 import { useTopic } from '../../hooks/topic.hooks'
 import { useEffect, useMemo } from 'react'
@@ -34,8 +35,12 @@ export function TopicInfo() {
         title={`Active Topic: ${topic.title}`}
         subtitle={`Created on ${createdOn}`}
         additionalInfo={
-          <Button variant="inverted" size="small">
-            <Link to={`/study-plan/${studyPlanId}`}>Back to study plan</Link>
+          <Button
+            variant="secondary"
+            size="sm"
+            nativeButton={false}
+            render={<Link to={`/study-plan/${studyPlanId}`} />}>
+            Back to study plan
           </Button>
         }
       />

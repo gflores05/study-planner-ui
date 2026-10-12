@@ -1,5 +1,7 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Button, Card } from '@/components'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
+import { Card } from '@/components/ui/card'
 import {
   faArrowUpRightFromSquare,
   faAward,
@@ -30,7 +32,7 @@ export function CompletedTopicCard({ topic, order }: CompletedTopicCardProps) {
   }, [topic])
 
   return (
-    <Card hover>
+    <Card className="transition-all hover:shadow-md">
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-4">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-emerald-100 text-emerald-600">
@@ -42,16 +44,16 @@ export function CompletedTopicCard({ topic, order }: CompletedTopicCardProps) {
             </h3>
             <p className="mt-1 text-sm text-slate-500">{subtopics}</p>
             <div className="mt-3 flex gap-2">
-              <span className="inline-flex items-center gap-1 rounded-md bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600">
+              <Badge variant="muted" className="h-auto rounded-md px-2 py-1">
                 <FontAwesomeIcon icon={faClock} /> {hours} hours
-              </span>
+              </Badge>
             </div>
           </div>
         </div>
-        <Button variant="success" size="small">
+        <Badge variant="success" className="h-auto rounded-md px-4 py-2">
           <FontAwesomeIcon icon={faAward} className="mr-1" /> Exam:{' '}
           {topic.assessment?.score}/100
-        </Button>
+        </Badge>
       </div>
     </Card>
   )
@@ -94,16 +96,16 @@ export function InProgressTopicCard({
   }
 
   return (
-    <Card selected>
+    <Card className="border-2 border-indigo-600 ring-1 ring-indigo-100">
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-4">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-indigo-100 text-indigo-600 animate-pulse">
             <FontAwesomeIcon icon={faBookOpen} className="text-lg" />
           </div>
           <div>
-            <span className="inline-block rounded-md bg-indigo-50 px-2 py-0.5 text-xs font-medium text-indigo-700 mb-1">
+            <Badge variant="info" className="mb-1 rounded-md">
               Studying now
-            </span>
+            </Badge>
             <h3 className="font-semibold text-slate-900 hover:text-indigo-600">
               <Link to={`/study-plan/${studyPlanId}/topic/${topic.id}`}>
                 {' '}
@@ -113,13 +115,13 @@ export function InProgressTopicCard({
             </h3>
             <p className="mt-1 text-sm text-slate-600">{subtopics}</p>
             <div className="mt-3 flex gap-2">
-              <span className="inline-flex items-center gap-1 rounded-md bg-slate-100 px-2 py-1 text-xs font-medium text-slate-600">
+              <Badge variant="muted" className="h-auto rounded-md px-2 py-1">
                 <FontAwesomeIcon icon={faClock} /> {hours} hours
-              </span>
+              </Badge>
             </div>
           </div>
         </div>
-        <Button variant="primary" size="small" onClick={startAssessment}>
+        <Button size="sm" onClick={startAssessment}>
           <FontAwesomeIcon icon={faPenToSquare} />{' '}
           {topic.assessment?.status === AssessmentStatus.IN_PROGRESS
             ? 'Continue Exam'
@@ -145,7 +147,7 @@ export function PendingTopicCard({ topic, order }: PendingTopicCardProps) {
   }, [topic])
 
   return (
-    <Card disabled>
+    <Card className="opacity-70">
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-4">
           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-100 text-slate-400">
@@ -157,13 +159,15 @@ export function PendingTopicCard({ topic, order }: PendingTopicCardProps) {
             </h3>
             <p className="mt-1 text-sm text-slate-400">{subtopics}</p>
             <div className="mt-3 flex gap-2">
-              <span className="inline-flex items-center gap-1 rounded-md bg-slate-50 px-2 py-1 text-xs font-medium text-slate-400">
+              <Badge
+                variant="muted"
+                className="h-auto rounded-md bg-slate-50 px-2 py-1 text-slate-400">
                 <FontAwesomeIcon icon={faClock} /> {hours} hours
-              </span>
+              </Badge>
             </div>
           </div>
         </div>
-        <Button disabled size="small">
+        <Button variant="outline" disabled size="sm">
           Bloqueado
         </Button>
       </div>

@@ -1,7 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faClock } from '@fortawesome/free-regular-svg-icons'
-import { Button, Navbar } from '@/components'
+import { Navbar } from '@/components'
+import { Button } from '@/components/ui/button'
 import { Spinner } from '@/components/ui/spinner'
 import { NavLink } from 'react-router'
 import { useTopic } from '@/features/topic/hooks/topic.hooks'
@@ -57,10 +58,13 @@ export function AssessmentCloseButton({
   studyPlanId
 }: AssessmentCloseButtonProps) {
   return (
-    <Button title="Salir del examen" size="icon">
-      <NavLink to={`/study-plan/${studyPlanId}`}>
-        <FontAwesomeIcon className="text-lg px-1" icon={faXmark} />
-      </NavLink>
+    <Button
+      variant="outline"
+      size="icon"
+      title="Salir del examen"
+      nativeButton={false}
+      render={<NavLink to={`/study-plan/${studyPlanId}`} />}>
+      <FontAwesomeIcon className="text-lg" icon={faXmark} />
     </Button>
   )
 }

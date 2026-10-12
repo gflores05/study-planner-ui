@@ -1,4 +1,5 @@
-import { ProgressBar, Title } from '@/components'
+import { Title } from '@/components'
+import { Progress } from '@/components/ui/progress'
 import { TopicsList } from './topics-list'
 import { useMemo } from 'react'
 import { AssessmentStatus } from '@/features/assessment'
@@ -45,7 +46,7 @@ export function PlanInfo() {
           </span>
         }
       />
-      <ProgressBar value={progress} />
+      <Progress value={progress} />
       <TopicsList />
     </div>
   )

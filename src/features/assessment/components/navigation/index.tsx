@@ -1,4 +1,5 @@
-import { Button } from '@/components'
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import { useAssessment } from '../../hooks/assessment.hooks'
 
 interface QuestionCompletedButtonProps {
@@ -9,9 +10,9 @@ export function QuestionCompletedButton({
   children
 }: QuestionCompletedButtonProps) {
   return (
-    <Button variant="success" size="small">
+    <Badge variant="success" className="h-8 min-w-8 rounded-md">
       {children}
-    </Button>
+    </Badge>
   )
 }
 
@@ -22,11 +23,7 @@ interface CurrentQuestionButtonProps {
 export function CurrentQuestionButton({
   children
 }: CurrentQuestionButtonProps) {
-  return (
-    <Button variant="primary" size="small">
-      {children}
-    </Button>
-  )
+  return <Button size="sm">{children}</Button>
 }
 
 interface QuestionNavigationButtonProps {
@@ -37,7 +34,7 @@ export function QuestionNavigationButton({
   children
 }: QuestionNavigationButtonProps) {
   return (
-    <Button disabled size="small">
+    <Button variant="outline" disabled size="sm">
       {children}
     </Button>
   )

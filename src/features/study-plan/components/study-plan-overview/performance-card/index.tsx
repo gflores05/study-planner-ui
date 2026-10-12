@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { Card } from '@/components'
+import { Card } from '@/components/ui/card'
 import { faFire } from '@fortawesome/free-solid-svg-icons'
 import { useMemo } from 'react'
 import { AssessmentStatus } from '@/features/assessment'
