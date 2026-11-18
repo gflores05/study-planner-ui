@@ -1,91 +1,66 @@
 import { useAppDispatch, useAppSelector } from '@/app/hooks'
+import { clearTokens } from '@/services'
 import {
   getUser,
-  setToken,
-  selectUserError,
-  selectUserLoading,
+  login as loginThunk,
+  logout as logoutAction,
+  register as registerThunk,
+  resetAuthError as resetAuthErrorAction,
+  selectAuthError,
+  selectAuthSubmitting,
   selectCurrentUser,
-  selectToken
+  selectIsAuthenticated,
+  selectUserError,
+  selectUserLoading
 } from '../store'
-import { useCallback, useMemo } from 'react'
-import { useAuth0 } from '@auth0/auth0-react'
+import { useCallback } from 'react'
+import type { LoginFormValues, RegisterFormValues } from '../schemas'
 
 export function useAuth() {
   const dispatch = useAppDispatch()
-  const {
-    isLoading,
-    isAuthenticated,
-    logout,
-    loginWithRedirect,
-    getAccessTokenSilently
-  } = useAuth0()
   const user = useAppSelector(selectCurrentUser)
-  const loading = useAppSelector(selectUserLoading)
+  const isAuthenticated = useAppSelector(selectIsAuthenticated)
+  const isUserLoading = useAppSelector(selectUserLoading)
   const error = useAppSelector(selectUserError)
-  const token = useAppSelector(selectToken)
-
-  const isTokenReady = useMemo(() => Boolean(token), [token])
-
-  const saveToken = useCallback(async () => {
-    try {
-      const accessToken = await getAccessTokenSilently()
-
-      dispatch(setToken(accessToken))
-    } catch (error) {
-      await logout({
-        logoutParams: {
-          returnTo: window.location.origin
-        }
-      })
-    }
-  }, [getAccessTokenSilently])
-
-  const handleLogout = useCallback(() => {
-    logout({
-      logoutParams: {
-        returnTo: window.location.origin
-      }
-    })
-  }, [logout])
-
-  const handleLogin = useCallback(async () => {
-    await loginWithRedirect({
-      appState: {
-        returnTo: '/'
-      },
-      authorizationParams: {
-        prompt: 'login'
-      }
-    })
-  }, [loginWithRedirect])
-
-  const handleSignUp = useCallback(async () => {
-    await loginWithRedirect({
-      appState: {
-        returnTo: '/'
-      },
-      authorizationParams: {
-        prompt: 'login',
-        screen_hint: 'signup'
-      }
-    })
-  }, [loginWithRedirect])
+  const submitting = useAppSelector(selectAuthSubmitting)
+  const authError = useAppSelector(selectAuthError)
 
   const fetchUser = useCallback(() => {
-    dispatch(getUser({}))
-  }, [getUser])
+    dispatch(getUser())
+  }, [dispatch])
+
+  /** Resolves with the user, rejects with the error message. */
+  const login = useCallback(
+    (values: LoginFormValues) => dispatch(loginThunk(values)).unwrap(),
+    [dispatch]
+  )
+
+  /** Registers and logs in. Resolves with the user, rejects with the message. */
+  const register = useCallback(
+    (values: RegisterFormValues) => dispatch(registerThunk(values)).unwrap(),
+    [dispatch]
+  )
+
+  const logout = useCallback(() => {
+    clearTokens()
+    dispatch(logoutAction())
+  }, [dispatch])
+
+  const resetAuthError = useCallback(() => {
+    dispatch(resetAuthErrorAction())
+  }, [dispatch])
 
   return {
     user,
-    isUserLoading: loading,
-    error,
-    isTokenReady,
-    isLoading,
     isAuthenticated,
+    isUserLoading,
+    error,
+    submitting,
+    authError,
     fetchUser,
-    saveToken,
-    handleLogout,
-    handleLogin,
-    handleSignUp
+    login,
+    register,
+    logout,
+    resetAuthError
   }
 }

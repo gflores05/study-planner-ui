@@ -8,6 +8,11 @@ export const selectCurrentUser = createSelector(
   authState => authState.current
 )
 
+export const selectIsAuthenticated = createSelector(
+  selectAuthState,
+  authState => authState.isAuthenticated
+)
+
 export const selectUserLoading = createSelector(
   selectAuthState,
   authState => authState.loading
@@ -18,7 +23,12 @@ export const selectUserError = createSelector(
   authState => authState.error
 )
 
-export const selectToken = createSelector(
+export const selectAuthSubmitting = createSelector(
   selectAuthState,
-  authState => authState.token
+  authState => authState.submitting
+)
+
+export const selectAuthError = createSelector(
+  selectAuthState,
+  authState => authState.authError
 )

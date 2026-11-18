@@ -4,24 +4,26 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Navbar } from '@/components'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback } from '@/components/ui/avatar'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { useEffect, useMemo, type ComponentProps } from 'react'
 import { Spinner } from '@/components/ui/spinner'
 import { useStudyPlan } from '../../../features/study-plan/hooks/study-plan.hooks'
-import { useAuth } from '@/features/auth/hooks'
-import { Link } from 'react-router'
+import { useAuth } from '@/features/auth'
+import { Link, useNavigate } from 'react-router'
 
 function StudyPlanLevel() {
   const { studyPlan, loading } = useStudyPlan()
   const { user, isUserLoading, fetchUser } = useAuth()
 
   useEffect(() => {
-    fetchUser()
-  }, [fetchUser])
+    if (!user) {
+      fetchUser()
+    }
+  }, [user, fetchUser])
 
-  const levelInitial = useMemo(() => user?.name[0].toUpperCase(), [user])
+  const userInitial = useMemo(() => user?.name[0]?.toUpperCase(), [user])
 
   if (isUserLoading) {
     return <Spinner />
@@ -40,14 +42,9 @@ function StudyPlanLevel() {
       {loading && <Spinner />}
 
       <div className="flex items-center gap-2 border-l border-slate-200 pl-4">
-        <Avatar className="size-9 ring-2 ring-slate-100">
-          <AvatarImage
-            alt={levelInitial}
-            src={user?.picture}
-            referrerPolicy="no-referrer"
-          />
+        <Avatar className="size-9 ring-2 ring-slate-100" title={user?.name}>
           <AvatarFallback className="bg-slate-200 font-semibold text-slate-600">
-            {levelInitial}
+            {userInitial}
           </AvatarFallback>
         </Avatar>
       </div>
@@ -82,7 +79,13 @@ export function StudyPlanNav() {
 }
 
 export function LogoutButton() {
-  const { handleLogout } = useAuth()
+  const { logout } = useAuth()
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout()
+    navigate('/login', { replace: true })
+  }
 
   return (
     <Button variant="ghost" size="icon" title="Log out" onClick={handleLogout}>
@@ -91,27 +94,32 @@ export function LogoutButton() {
   )
 }
 
-interface LoginButton extends Omit<
+type LinkButtonProps = Omit<
   ComponentProps<typeof Button>,
-  'children' | 'onClick'
-> {}
+  'children' | 'onClick' | 'render' | 'nativeButton'
+>
 
-export function LoginButton(props: LoginButton) {
-  const { handleLogin } = useAuth()
-
+export function LoginButton(props: LinkButtonProps) {
   return (
-    <Button variant="outline" size="lg" {...props} onClick={handleLogin}>
+    <Button
+      variant="outline"
+      size="lg"
+      {...props}
+      nativeButton={false}
+      render={<Link to="/login" />}>
       Log In
     </Button>
   )
 }
 
-export function SingupButton() {
-  const { handleSignUp } = useAuth()
-
+export function SignupButton(props: LinkButtonProps) {
   return (
-    <Button onClick={handleSignUp} size="lg">
-      Sing Up
+    <Button
+      size="lg"
+      {...props}
+      nativeButton={false}
+      render={<Link to="/register" />}>
+      Sign Up
     </Button>
   )
 }
@@ -120,7 +128,7 @@ export function AuthNav() {
   return (
     <div className="flex gap-4">
       <LoginButton />
-      <SingupButton />
+      <SignupButton />
     </div>
   )
 }

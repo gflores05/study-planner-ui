@@ -1,20 +1,11 @@
 import { Content } from '@/components'
-import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
-import { LoginButton } from '../app-navbar'
+import { LoginButton, SignupButton } from '../app-navbar'
 import { Link } from 'react-router'
-import { useAuth0 } from '@auth0/auth0-react'
+import { useAuth } from '@/features/auth'
 
 export function Home() {
-  const { isAuthenticated, error } = useAuth0()
-
-  if (error) {
-    return (
-      <Alert variant="destructive" className="mt-4">
-        <AlertDescription>{error.message}</AlertDescription>
-      </Alert>
-    )
-  }
+  const { isAuthenticated } = useAuth()
 
   return (
     <Content alignContent="center">
@@ -31,7 +22,10 @@ export function Home() {
             Start
           </Button>
         ) : (
-          <LoginButton size="lg" />
+          <div className="flex gap-4">
+            <LoginButton />
+            <SignupButton />
+          </div>
         )}
       </div>
     </Content>

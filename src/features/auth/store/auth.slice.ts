@@ -1,31 +1,40 @@
-import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
-import { getUser } from './auth.thunks'
+import { createSlice } from '@reduxjs/toolkit'
+import { getAccessToken } from '@/services'
+import { getUser, login, register } from './auth.thunks'
 import type { User } from '../types'
 
-interface AuthState {
+export interface AuthState {
   current: User | null
-  token: string | null
-  error: string | null
+  isAuthenticated: boolean
+  /** Loading the current user. */
   loading: boolean
+  error: string | null
+  /** A login/register request is in flight. */
+  submitting: boolean
+  authError: string | null
 }
 
-const initialState: AuthState = {
+// Lazy so the session is restored from storage when the store is created
+// (and again when it is reset on logout).
+const initialState = (): AuthState => ({
   current: null,
-  token: null,
+  isAuthenticated: getAccessToken() !== null,
+  loading: false,
   error: null,
-  loading: false
-}
+  submitting: false,
+  authError: null
+})
 
 const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    setToken: (state, payload: PayloadAction<string>) => {
-      state.token = payload.payload
+    logout: () => ({ ...initialState(), isAuthenticated: false }),
+    resetAuthError: state => {
+      state.authError = null
     }
   },
   extraReducers: builder => {
-    // Handle the getUser thunk actions
     builder
       .addCase(getUser.pending, state => {
         state.loading = true
@@ -37,10 +46,27 @@ const authSlice = createSlice({
       })
       .addCase(getUser.rejected, (state, action) => {
         state.loading = false
-        state.error = action.payload as string | null
+        state.error = action.payload ?? 'Failed to load the user'
       })
+
+    for (const thunk of [login, register]) {
+      builder
+        .addCase(thunk.pending, state => {
+          state.submitting = true
+          state.authError = null
+        })
+        .addCase(thunk.fulfilled, (state, action) => {
+          state.submitting = false
+          state.isAuthenticated = true
+          state.current = action.payload
+        })
+        .addCase(thunk.rejected, (state, action) => {
+          state.submitting = false
+          state.authError = action.payload ?? 'Something went wrong'
+        })
+    }
   }
 })
 
-export const { setToken } = authSlice.actions
+export const { logout, resetAuthError } = authSlice.actions
 export default authSlice.reducer

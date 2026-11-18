@@ -5,7 +5,6 @@ export const UserMapper = {
   fromDTO: (dto: UserDTO): User => ({
     id: dto.id,
     name: dto.name,
-    picture: dto.picture,
     email: dto.email
   })
 }
